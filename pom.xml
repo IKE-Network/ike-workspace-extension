@@ -119,6 +119,23 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <proc>full</proc>
+                    <!-- ike-parent declares <annotationProcessorPaths>
+                         (record-builder). When that element is set,
+                         Maven uses ONLY that path for processor
+                         discovery — classpath scanning is disabled.
+                         We need maven-api-di's DiIndexProcessor to run
+                         (it emits META-INF/maven/org.apache.maven.api.di.Inject,
+                         which is how Maven 4 discovers our @Named bean),
+                         so we override the list. combine.self="override"
+                         replaces the parent's value entirely instead of
+                         merging. -->
+                    <annotationProcessorPaths combine.self="override">
+                        <annotationProcessorPath>
+                            <groupId>org.apache.maven</groupId>
+                            <artifactId>maven-api-di</artifactId>
+                            <version>${maven.version}</version>
+                        </annotationProcessorPath>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>
