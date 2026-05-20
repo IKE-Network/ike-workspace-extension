@@ -1,0 +1,22 @@
+# IKE Workspace Extension
+
+> Maven 4 build extension that prunes non-existent <subprojects>
+> entries from workspace POMs before model validation. Lets a
+> fresh clone of an IKE workspace bootstrap with mvn ws:scaffold-init
+> before any subproject directory is on disk.
+
+## Documentation
+
+- [IKE Workspace Extension](https://github.com/IKE-Network/ike-workspace-extension/index.html.md)
+
+## Reports
+
+- [Project Dependencies](https://github.com/IKE-Network/ike-workspace-extension/dependencies.html.md)
+- [Maven Coordinates](https://github.com/IKE-Network/ike-workspace-extension/dependency-info.html.md)
+- [Project Distribution Management](https://github.com/IKE-Network/ike-workspace-extension/distribution-management.html.md)
+- [Project Licenses](https://github.com/IKE-Network/ike-workspace-extension/licenses.html.md)
+- [Project Plugins](https://github.com/IKE-Network/ike-workspace-extension/plugins.html.md)
+- [Source Code Management](https://github.com/IKE-Network/ike-workspace-extension/scm.html.md)
+- [Project Summary](https://github.com/IKE-Network/ike-workspace-extension/summary.html.md)
+- [Project Team](https://github.com/IKE-Network/ike-workspace-extension/team.html.md)
+- [Project Information](https://github.com/IKE-Network/ike-workspace-extension/project-info.html.md)
