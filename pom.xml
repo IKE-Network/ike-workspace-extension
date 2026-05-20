@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  IKE Network — Workspace Maven Extension
+  ════════════════════════════════════════
+
+  A Maven 4 build extension that prunes <subprojects> entries whose
+  directory is not on disk from workspace POMs, before model
+  validation runs. Lets a fresh-clone IKE workspace bootstrap with
+  `mvn ws:scaffold-init` even when no subproject has been cloned yet.
+
+  See IKE-Network/ike-issues#460 for the design and motivation.
+
+  Standalone artifact, versioned independently of the ike-platform
+  release cadence. Stable contract: prune missing entries, do
+  nothing else. We commit to never growing this artifact's scope.
+
+  Build:    mvn install
+  Artifact: network.ike.tooling:ike-workspace-extension:<version>
+-->
+<project xmlns="http://maven.apache.org/POM/4.1.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.1.0
+                             http://maven.apache.org/xsd/maven-4.1.0.xsd">
+    <modelVersion>4.1.0</modelVersion>
+
+    <parent>
+        <groupId>network.ike.platform</groupId>
+        <artifactId>ike-parent</artifactId>
+        <version>74</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>network.ike.tooling</groupId>
+    <artifactId>ike-workspace-extension</artifactId>
+    <version>1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>IKE Workspace Extension</name>
+    <description>
+        Maven 4 build extension that prunes non-existent &lt;subprojects&gt;
+        entries from workspace POMs before model validation. Lets a
+        fresh clone of an IKE workspace bootstrap with mvn ws:scaffold-init
+        before any subproject directory is on disk.
+    </description>
+    <url>https://github.com/IKE-Network/ike-workspace-extension</url>
+    <inceptionYear>2026</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>IKE Network</name>
+        <url>https://ike.network</url>
+    </organization>
+
+    <distributionManagement>
+        <site>
+            <id>ike-site</id>
+            <url>https://ike.network/${project.artifactId}/</url>
+        </site>
+    </distributionManagement>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.deploy.skip>false</maven.deploy.skip>
+        <maven.install.skip>false</maven.install.skip>
+        <!-- Pin to the Maven 4 line the IKE workspaces ship. -->
+        <maven.version>4.0.0-rc-5</maven.version>
+    </properties>
+
+    <!-- Maven 4 API dependencies are compile-scope (not provided), per
+         the maveniverse/mason canonical wiring. The annotation
+         processor in maven-api-di emits META-INF/maven/o.a.m.a.di.Inject
+         when <proc>full</proc> is set on the compiler. -->
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-api-spi</artifactId>
+            <version>${maven.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-api-core</artifactId>
+            <version>${maven.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-api-model</artifactId>
+            <version>${maven.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-api-di</artifactId>
+            <version>${maven.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <proc>full</proc>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
