@@ -8,3 +8,6 @@ target/
 # Claude Code standards (regenerated from ike-build-standards artifact)
 .claude/
 **/.claude/
+
+# ike:* goal reports
+ike꞉*.md

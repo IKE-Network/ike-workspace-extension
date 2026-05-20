@@ -24,9 +24,9 @@
     <modelVersion>4.1.0</modelVersion>
 
     <parent>
-        <groupId>network.ike.platform</groupId>
-        <artifactId>ike-parent</artifactId>
-        <version>74</version>
+        <groupId>network.ike</groupId>
+        <artifactId>ike-base-parent</artifactId>
+        <version>1</version>
         <relativePath/>
     </parent>
 
@@ -98,44 +98,31 @@
             <artifactId>maven-api-di</artifactId>
             <version>${maven.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit-jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>${assertj.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
+
+    <!--
+        No in-repo tests. The transformer's behavior is exercised by
+        WsScaffoldInitMojoTest in ike-platform/ike-workspace-maven-plugin
+        (where the test harness, JUnit/AssertJ versions, and reactor
+        plumbing already live). Keeping this artifact pure-library lets
+        ike-base-parent be a clean Tier 0 inheritance with no test-stack
+        baggage.
+    -->
 
     <build>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.0</version>
                 <configuration>
+                    <release>21</release>
+                    <!-- maven-api-di's DiIndexProcessor emits
+                         META-INF/maven/org.apache.maven.api.di.Inject,
+                         which is how Maven 4 discovers our @Named bean.
+                         <proc>full</proc> lets Maven scan the classpath
+                         for processors (maven-api-di brings the
+                         processor itself in via its jar). -->
                     <proc>full</proc>
-                    <!-- ike-parent declares <annotationProcessorPaths>
-                         (record-builder). When that element is set,
-                         Maven uses ONLY that path for processor
-                         discovery — classpath scanning is disabled.
-                         We need maven-api-di's DiIndexProcessor to run
-                         (it emits META-INF/maven/org.apache.maven.api.di.Inject,
-                         which is how Maven 4 discovers our @Named bean),
-                         so we override the list. combine.self="override"
-                         replaces the parent's value entirely instead of
-                         merging. -->
-                    <annotationProcessorPaths combine.self="override">
-                        <annotationProcessorPath>
-                            <groupId>org.apache.maven</groupId>
-                            <artifactId>maven-api-di</artifactId>
-                            <version>${maven.version}</version>
-                        </annotationProcessorPath>
-                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>

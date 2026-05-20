@@ -44,11 +44,19 @@ loaded into the extension classloader). No `ike-*` runtime
 dependencies, no business logic, no knowledge of IKE conventions
 beyond *"sibling `workspace.yaml` marks a workspace POM."*
 
-Versioned at `1`, decoupled from the
+Inherits from
+[`network.ike:ike-base-parent`](https://github.com/IKE-Network/ike-base-parent)
+(Tier 0 — publishing metadata, GPG signing, Maven Central
+deployment). Deliberately **does not** inherit from
+`network.ike.platform:ike-parent` (Tier 2 — build conventions and
+plugin management for the ike-platform reactor): coupling there
+would re-introduce the version churn the standalone repo exists to
+avoid.
+
+Versioned independently of the
 [`ike-platform`](https://github.com/IKE-Network/ike-platform)
-release cadence so it does not inherit churn. If we ever need
-different behavior, we add a separate extension rather than
-evolving this one.
+release cadence. If we ever need different behavior, we add a
+separate extension rather than evolving this one.
 
 ## Wiring
 
