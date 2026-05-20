@@ -26,7 +26,7 @@
     <parent>
         <groupId>network.ike</groupId>
         <artifactId>ike-base-parent</artifactId>
-        <version>1</version>
+        <version>3</version>
         <relativePath/>
     </parent>
 
@@ -124,56 +124,6 @@
                          processor itself in via its jar). -->
                     <proc>full</proc>
                 </configuration>
-            </plugin>
-
-            <!--
-                Wire the Sentry maven-skin-tools (so the <custom><bodyClass>
-                in src/site/site.xml is applied) and the AsciiDoc Doxia
-                module (so src/site/asciidoc/*.adoc renders correctly).
-                These are normally inherited from ike-base-parent, but
-                ike-base-parent v1 (the released coordinate) predates the
-                addition. Declared locally here until ike-base-parent ships
-                them in a release; can be removed then.
-            -->
-            <plugin>
-                <artifactId>maven-site-plugin</artifactId>
-                <version>3.21.0</version>
-                <dependencies>
-                    <!-- Sentry skin-tools processes <custom><bodyClass>
-                         and the AsciiDoc Doxia module renders
-                         src/site/asciidoc/*.adoc. Exclude the bundled
-                         org.graalvm.js:js (old) — it pulls a graal-js
-                         that hits sun.misc.Unsafe removal on Java 25.
-                         Pull the modern polyglot+js artifacts directly
-                         instead (matches ike-base-parent's wiring). -->
-                    <dependency>
-                        <groupId>org.sentrysoftware.maven</groupId>
-                        <artifactId>maven-skin-tools</artifactId>
-                        <version>1.7.00</version>
-                        <exclusions>
-                            <exclusion>
-                                <groupId>org.graalvm.js</groupId>
-                                <artifactId>js</artifactId>
-                            </exclusion>
-                        </exclusions>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.graalvm.polyglot</groupId>
-                        <artifactId>polyglot</artifactId>
-                        <version>25.0.2</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.graalvm.polyglot</groupId>
-                        <artifactId>js</artifactId>
-                        <version>25.0.2</version>
-                        <type>pom</type>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.asciidoctor</groupId>
-                        <artifactId>asciidoctor-parser-doxia-module</artifactId>
-                        <version>3.2.0</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>
