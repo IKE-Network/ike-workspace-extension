@@ -1,0 +1,28 @@
+# release-cascade.yaml — ike-workspace-extension's edges in the IKE
+# release cascade (IKE-Network/ike-issues#420, #460).
+#
+# The cascade is a loosely-coupled distributed system: every
+# foundation repo version-controls this file in its own git tree and
+# declares ONLY its own edges. No project authors the global ordering
+# — the full graph is assembled by traversing these per-project
+# files.
+#
+#   upstream   — projects this repo consumes; each names the
+#                ${X.version} property the cascade aligns to the
+#                upstream's latest release before a release here.
+#                ike-workspace-extension has none — it inherits
+#                ike-base-parent (Tier 0) but parent-inheritance
+#                bumps are not yet cascade-tracked
+#                (IKE-Network/ike-issues#462).
+#   downstream — foundation projects that consume this repo; the
+#                cascade executor walks forward to each after a
+#                release here. ike-platform consumes this artifact
+#                via the ${ike-workspace-extension.version} property
+#                declared in its reactor root POM.
+
+schema: 1
+
+downstream:
+  - groupId: network.ike.platform
+    artifactId: ike-platform
+    url: https://github.com/IKE-Network/ike-platform.git
