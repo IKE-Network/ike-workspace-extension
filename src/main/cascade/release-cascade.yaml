@@ -21,6 +21,12 @@
 #                declared in its reactor root POM.
 
 schema: 1
+# No cascade-tracked upstream: the only upstream is ike-base-parent,
+# inherited via <parent>, and parent-inheritance is not cascade-
+# tracked yet (IKE-Network/ike-issues#462). Asserting head positively
+# so a forgotten upstream edge is a manifest error, not a silent
+# omission — per the cascade schema convention.
+head: true
 
 downstream:
   - groupId: network.ike.platform
