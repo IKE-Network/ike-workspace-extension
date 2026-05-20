@@ -37,7 +37,7 @@ The following is a list of compile dependencies for this project. These dependen
 
 ## [Dependency Tree](#dependency-tree)
 
-- network.ike.tooling:ike-workspace-extension:jar:2-SNAPSHOT ** 
+- network.ike.tooling:ike-workspace-extension:jar:2 ** 
   
   | IKE Workspace Extension |
   | --- |

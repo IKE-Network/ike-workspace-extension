@@ -8,10 +8,14 @@ canonical_url: https://github.com/IKE-Network/ike-workspace-extension/distributi
 
 The following is the distribution management information used by this project.
 
+## [Repository - ike-staging](#repository---ike-staging)
+
+[https://nexus.tinkar.org/repository/ike-staging/](https://nexus.tinkar.org/repository/ike-staging/)[1] 
+
 ## [Snapshot Repository - ike-snapshots](#snapshot-repository---ike-snapshots)
 
-[https://nexus.tinkar.org/repository/ike-snapshots/](https://nexus.tinkar.org/repository/ike-snapshots/)[1] 
+[https://nexus.tinkar.org/repository/ike-snapshots/](https://nexus.tinkar.org/repository/ike-snapshots/)[2] 
 
 ## [Site - ike-site](#site---ike-site)
 
-[https://ike.network/ike-workspace-extension/](https://ike.network/ike-workspace-extension/)[2]
+[https://ike.network/ike-workspace-extension/](https://ike.network/ike-workspace-extension/)[3]
