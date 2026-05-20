@@ -98,6 +98,23 @@
             <artifactId>maven-api-di</artifactId>
             <version>${maven.version}</version>
         </dependency>
+
+        <!-- IKE Forest site theme — provides the canonical site.css
+             and ike-logo.svg every IKE-Network site uses. Normally
+             inherited via ike-parent's `site-resources` profile, but
+             this artifact inherits ike-base-parent (Tier 0) directly,
+             so we depend explicitly. The maven-dependency-plugin
+             execution below unpacks the ZIP at pre-site. Removable
+             once the site-resources convention is promoted to
+             ike-base-parent (tracked separately). -->
+        <dependency>
+            <groupId>network.ike.tooling</groupId>
+            <artifactId>ike-build-standards</artifactId>
+            <version>190</version>
+            <classifier>site-theme</classifier>
+            <type>zip</type>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <!--
@@ -124,6 +141,34 @@
                          processor itself in via its jar). -->
                     <proc>full</proc>
                 </configuration>
+            </plugin>
+
+            <!-- Unpack the IKE Forest site theme so site.css carries
+                 the canonical IKE-Network look. ike-parent's
+                 `site-resources` profile does this for inheritors of
+                 ike-parent (Tier 2); ike-workspace-extension inherits
+                 ike-base-parent (Tier 0) directly, so we wire it
+                 locally. Removable once the convention is promoted to
+                 ike-base-parent. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.9.0</version>
+                <executions>
+                    <execution>
+                        <id>unpack-site-theme</id>
+                        <phase>pre-site</phase>
+                        <goals><goal>unpack-dependencies</goal></goals>
+                        <configuration>
+                            <includeArtifactIds>ike-build-standards</includeArtifactIds>
+                            <includeClassifiers>site-theme</includeClassifiers>
+                            <includeTypes>zip</includeTypes>
+                            <outputDirectory>${project.build.directory}/generated-site/resources</outputDirectory>
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
