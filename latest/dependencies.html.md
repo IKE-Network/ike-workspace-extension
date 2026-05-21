@@ -23,7 +23,7 @@ The following is a list of provided dependencies for this project. These depende
 
 | GroupId | ArtifactId | Version | Classifier | Type | Licenses |
 | --- | --- | --- | --- | --- | --- |
-| network.ike.tooling | [ike-build-standards](https://ike.network/ike-tooling/ike-build-standards/)[6] | 190 | site-theme | zip | [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+| network.ike | [ike-base-parent](https://ike.network/ike-base-parent/)[6] | 5 | site-theme | zip | [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
 
 # Project Transitive Dependencies
 
@@ -45,7 +45,7 @@ The following is a list of compile dependencies for this project. These dependen
 
 ## [Dependency Tree](#dependency-tree)
 
-- network.ike.tooling:ike-workspace-extension:jar:3 ** 
+- network.ike.tooling:ike-workspace-extension:jar:4 ** 
   
   | IKE Workspace Extension |
   | --- |
@@ -98,15 +98,15 @@ The following is a list of compile dependencies for this project. These dependen
       | Maven 4 API :: Dependency Injection |
       | --- |
       | **Description: **Maven 4 API - Dependency Injection **URL: **[https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-di/](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-di/)[3] **Project Licenses: **[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
-    - network.ike.tooling:ike-build-standards:zip:site-theme:190 (provided) ** 
+    - network.ike:ike-base-parent:zip:site-theme:5 (provided) ** 
       
-      | IKE Build Standards |
+      | IKE Base Parent |
       | --- |
-      | **Description: **Versioned Claude instruction files for IKE projects. Modular standards (Maven, Java, IKE-specific) distributed as a classified Maven artifact. **URL: **[https://ike.network/ike-tooling/ike-build-standards/](https://ike.network/ike-tooling/ike-build-standards/)[6] **Project Licenses: **[Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+      | **Description: **Tier 0 foundation parent for the IKE Network — the apex of the parent inheritance forest, inherited by ike-tooling, ike-docs, and ike-platform. Carries shared publishing metadata, GPG signing, and Maven Central publishing configuration. **URL: **[https://ike.network/ike-base-parent/](https://ike.network/ike-base-parent/)[6] **Project Licenses: **[Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
 
 # Licenses
 
-**Apache License, Version 2.0: **IKE Build Standards, IKE Workspace Extension
+**Apache License, Version 2.0: **IKE Base Parent, IKE Workspace Extension
 
 **Apache-2.0: **Maven 4 API :: Core, Maven 4 API :: Dependency Injection, Maven 4 API :: Meta annotations, Maven 4 API :: Model, Maven 4 API :: Plugin, Maven 4 API :: SPI, Maven 4 API :: Settings, Maven 4 API :: Toolchain, Maven 4 API :: XML
 
@@ -114,7 +114,7 @@ The following is a list of compile dependencies for this project. These dependen
 
 | Total | Size | Entries | Classes | Packages | Java Version | Debug Information |
 | --- | --- | --- | --- | --- | --- | --- |
-| ike-build-standards-190-site-theme.zip | 3.4 kB | - | - | - | - | - |
+| ike-base-parent-5-site-theme.zip | 3.4 kB | - | - | - | - | - |
 | maven-api-annotations-4.0.0-rc-5.jar | 13.1 kB | 27 | 12 | 1 | 17 | Yes |
 | maven-api-core-4.0.0-rc-5.jar | 218.3 kB | 257 | 237 | 7 | 17 | Yes |
 | maven-api-di-4.0.0-rc-5.jar | 16.4 kB | 32 | 13 | 2 | 17 | Yes |

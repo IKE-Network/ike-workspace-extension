@@ -27,6 +27,6 @@ canonical_url: https://github.com/IKE-Network/ike-workspace-extension/summary.ht
 | --- | --- |
 | GroupId | network.ike.tooling |
 | ArtifactId | ike-workspace-extension |
-| Version | 3 |
+| Version | 4 |
 | Type | jar |
 | Java Version | - |
