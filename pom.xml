@@ -58,6 +58,17 @@
         <url>https://ike.network</url>
     </organization>
 
+    <!-- Locally declared so the cascade's coordinate-to-repository
+         lookup resolves a real repo URL, not the artifactId-appended
+         path Maven would otherwise inherit from ike-base-parent.
+         See IKE-Network/ike-issues#496. -->
+    <scm>
+        <connection>scm:git:https://github.com/IKE-Network/ike-workspace-extension.git</connection>
+        <developerConnection>scm:git:git@github.com:IKE-Network/ike-workspace-extension.git</developerConnection>
+        <url>https://github.com/IKE-Network/ike-workspace-extension</url>
+        <tag>HEAD</tag>
+    </scm>
+
     <distributionManagement>
         <site>
             <id>ike-site</id>
