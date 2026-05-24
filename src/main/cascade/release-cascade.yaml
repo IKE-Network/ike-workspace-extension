@@ -7,18 +7,17 @@
 # — the full graph is assembled by traversing these per-project
 # files.
 #
-#   upstream   — projects this repo consumes; each names the
-#                ${X.version} property the cascade aligns to the
-#                upstream's latest release before a release here.
-#                ike-workspace-extension has none — it inherits
-#                ike-base-parent (Tier 0) but parent-inheritance
+#   upstream   — projects this repo consumes. The canonical ${G·A}
+#                version pin (U+00B7) that the cascade aligns is
+#                derived mechanically from each upstream's coordinates
+#                (IKE-Network/ike-issues#496).
+#                ike-workspace-extension has no cascade-tracked upstream —
+#                it inherits ike-base-parent (Tier 0) but parent-inheritance
 #                bumps are not yet cascade-tracked
 #                (IKE-Network/ike-issues#462).
 #   downstream — foundation projects that consume this repo; the
 #                cascade executor walks forward to each after a
-#                release here. ike-platform consumes this artifact
-#                via the ${ike-workspace-extension.version} property
-#                declared in its reactor root POM.
+#                release here.
 
 schema: 1
 # No cascade-tracked upstream: the only upstream is ike-base-parent,
