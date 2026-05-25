@@ -42,7 +42,7 @@
         fresh clone of an IKE workspace bootstrap with mvn ws:scaffold-init
         before any subproject directory is on disk.
     </description>
-    <url>https://github.com/IKE-Network/ike-workspace-extension</url>
+    <url>https://ike.network/ike-workspace-extension/</url>
     <inceptionYear>2026</inceptionYear>
 
     <licenses>
