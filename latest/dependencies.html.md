@@ -1,7 +1,7 @@
 ---
 date_published: 1980-01-31
 date_modified: 1980-01-31
-canonical_url: https://github.com/IKE-Network/ike-workspace-extension/dependencies.html
+canonical_url: https://ike.network/ike-workspace-extension/dependencies.html
 ---
 
 # Project Dependencies
@@ -45,11 +45,11 @@ The following is a list of compile dependencies for this project. These dependen
 
 ## [Dependency Tree](#dependency-tree)
 
-- network.ike.tooling:ike-workspace-extension:jar:4 ** 
+- network.ike.tooling:ike-workspace-extension:jar:5 ** 
   
   | IKE Workspace Extension |
   | --- |
-  | **Description: **Maven 4 build extension that prunes non-existent <subprojects> entries from workspace POMs before model validation. Lets a fresh clone of an IKE workspace bootstrap with mvn ws:scaffold-init before any subproject directory is on disk. **URL: **[https://github.com/IKE-Network/ike-workspace-extension](https://github.com/IKE-Network/ike-workspace-extension)[12] **Project Licenses: **[Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+  | **Description: **Maven 4 build extension that prunes non-existent <subprojects> entries from workspace POMs before model validation. Lets a fresh clone of an IKE workspace bootstrap with mvn ws:scaffold-init before any subproject directory is on disk. **URL: **[https://ike.network/ike-workspace-extension/](https://ike.network/ike-workspace-extension/)[12] **Project Licenses: **[Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
   
     - org.apache.maven:maven-api-spi:jar:4.0.0-rc-5 (compile) ** 
       

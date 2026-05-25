@@ -1,7 +1,7 @@
 ---
 date_published: 1980-01-31
 date_modified: 1980-01-31
-canonical_url: https://github.com/IKE-Network/ike-workspace-extension/summary.html
+canonical_url: https://ike.network/ike-workspace-extension/summary.html
 ---
 
 # Project Summary
@@ -12,7 +12,7 @@ canonical_url: https://github.com/IKE-Network/ike-workspace-extension/summary.ht
 | --- | --- |
 | Name | IKE Workspace Extension |
 | Description | Maven 4 build extension that prunes non-existent <subprojects> entries from workspace POMs before model validation. Lets a fresh clone of an IKE workspace bootstrap with mvn ws:scaffold-init before any subproject directory is on disk. |
-| Homepage | [https://github.com/IKE-Network/ike-workspace-extension](https://github.com/IKE-Network/ike-workspace-extension)[1] |
+| Homepage | [https://ike.network/ike-workspace-extension/](https://ike.network/ike-workspace-extension/)[1] |
 
 ## [Project Organization](#project-organization)
 
@@ -27,6 +27,6 @@ canonical_url: https://github.com/IKE-Network/ike-workspace-extension/summary.ht
 | --- | --- |
 | GroupId | network.ike.tooling |
 | ArtifactId | ike-workspace-extension |
-| Version | 4 |
+| Version | 5 |
 | Type | jar |
 | Java Version | - |
