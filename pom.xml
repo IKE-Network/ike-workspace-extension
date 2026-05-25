@@ -32,7 +32,7 @@
 
     <groupId>network.ike.tooling</groupId>
     <artifactId>ike-workspace-extension</artifactId>
-    <version>6-SNAPSHOT</version>
+    <version>6</version>
     <packaging>jar</packaging>
 
     <name>IKE Workspace Extension</name>
