@@ -23,7 +23,7 @@ The following is a list of provided dependencies for this project. These depende
 
 | GroupId | ArtifactId | Version | Classifier | Type | Licenses |
 | --- | --- | --- | --- | --- | --- |
-| network.ike | [ike-base-parent](https://ike.network/ike-base-parent/)[6] | 8 | site-theme | zip | [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+| network.ike | [ike-base-parent](https://ike.network/ike-base-parent/)[6] | 15 | site-theme | zip | [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
 
 # Project Transitive Dependencies
 
@@ -45,7 +45,7 @@ The following is a list of compile dependencies for this project. These dependen
 
 ## [Dependency Tree](#dependency-tree)
 
-- network.ike.tooling:ike-workspace-extension:jar:8 ** 
+- network.ike.tooling:ike-workspace-extension:jar:9 ** 
   
   | IKE Workspace Extension |
   | --- |
@@ -98,7 +98,7 @@ The following is a list of compile dependencies for this project. These dependen
       | Maven 4 API :: Dependency Injection |
       | --- |
       | **Description: **Maven 4 API - Dependency Injection **URL: **[https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-di/](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-di/)[3] **Project Licenses: **[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
-    - network.ike:ike-base-parent:zip:site-theme:8 (provided) ** 
+    - network.ike:ike-base-parent:zip:site-theme:15 (provided) ** 
       
       | IKE Base Parent |
       | --- |
@@ -114,7 +114,7 @@ The following is a list of compile dependencies for this project. These dependen
 
 | Total | Size | Entries | Classes | Packages | Java Version | Debug Information |
 | --- | --- | --- | --- | --- | --- | --- |
-| ike-base-parent-8-site-theme.zip | 3.4 kB | - | - | - | - | - |
+| ike-base-parent-15-site-theme.zip | 3.4 kB | - | - | - | - | - |
 | maven-api-annotations-4.0.0-rc-5.jar | 13.1 kB | 27 | 12 | 1 | 17 | Yes |
 | maven-api-core-4.0.0-rc-5.jar | 218.3 kB | 257 | 237 | 7 | 17 | Yes |
 | maven-api-di-4.0.0-rc-5.jar | 16.4 kB | 32 | 13 | 2 | 17 | Yes |
