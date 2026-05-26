@@ -18,6 +18,7 @@
 - [Maven Coordinates](https://ike.network/ike-workspace-extension/dependency-info.html.md)
 - [Project Distribution Management](https://ike.network/ike-workspace-extension/distribution-management.html.md)
 - [Project Licenses](https://ike.network/ike-workspace-extension/licenses.html.md)
+- [Project Plugin Management](https://ike.network/ike-workspace-extension/plugin-management.html.md)
 - [Project Plugins](https://ike.network/ike-workspace-extension/plugins.html.md)
 - [Source Code Management](https://ike.network/ike-workspace-extension/scm.html.md)
 - [Project Summary](https://ike.network/ike-workspace-extension/summary.html.md)

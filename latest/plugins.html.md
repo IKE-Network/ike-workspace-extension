@@ -18,10 +18,9 @@ canonical_url: https://ike.network/ike-workspace-extension/plugins.html
 | org.apache.maven.plugins | [maven-resources-plugin](https://maven.apache.org/plugins/maven-resources-plugin/)[8] | 3.3.1 |
 | org.apache.maven.plugins | [maven-site-plugin](https://maven.apache.org/plugins/maven-site-plugin/)[9] | 3.21.0 |
 | org.apache.maven.plugins | [maven-surefire-plugin](https://maven.apache.org/surefire/maven-surefire-plugin/)[10] | 3.5.2 |
-| org.jreleaser | [jreleaser-maven-plugin](https://github.com/jreleaser/jreleaser)[11] | 1.24.0 |
 
 # Project Report Plugins
 
 | GroupId | ArtifactId | Version |
 | --- | --- | --- |
-| org.apache.maven.plugins | [maven-project-info-reports-plugin](https://maven.apache.org/plugins/maven-project-info-reports-plugin/)[12] | 3.9.0 |
+| org.apache.maven.plugins | [maven-project-info-reports-plugin](https://maven.apache.org/plugins/maven-project-info-reports-plugin/)[11] | 3.9.0 |
