@@ -348,9 +348,18 @@ final class WorkspaceIndex {
                         && line.matches("^    recorded:.*")) {
                     String date = line.replaceAll(
                             "^    recorded:\\s*\"?([^\"]*)\"?\\s*$", "$1");
+                    // Two cycles recorded on the same date tie on the
+                    // date alone, and the file-listing order then kept
+                    // the OLDER record — cycle 4 ran past midnight with
+                    // cycle 3's date and every bystander bound one
+                    // generation stale (ike-issues#1026). The cycle's
+                    // numeric suffix is the root version counter —
+                    // monotonic by construction — so it breaks the tie;
+                    // the ISO date still dominates across dates.
+                    String key = date + "|" + cycleSequence(record);
                     String prior = recordedDate.get(member);
-                    if (prior == null || date.compareTo(prior) > 0) {
-                        recordedDate.put(member, date);
+                    if (prior == null || key.compareTo(prior) > 0) {
+                        recordedDate.put(member, key);
                         version.put(member, v);
                     }
                 }
@@ -359,6 +368,24 @@ final class WorkspaceIndex {
             System.err.println("[ike-workspace-extension] cannot read "
                     + record + ": " + e.getMessage());
         }
+    }
+
+    /**
+     * The record's cycle sequence, zero-padded for lexicographic
+     * comparison: the trailing digits of
+     * {@code release-<label>-<N>.yaml}. Records without a numeric
+     * suffix sort lowest.
+     *
+     * @param record the record file
+     * @return a fixed-width sortable sequence string
+     */
+    private static String cycleSequence(Path record) {
+        String name = record.getFileName().toString();
+        java.util.regex.Matcher matcher = java.util.regex.Pattern
+                .compile("-(\\d+)\\.yaml$").matcher(name);
+        long sequence = matcher.find()
+                ? Long.parseLong(matcher.group(1)) : 0L;
+        return String.format("%012d", sequence);
     }
 
     /**
