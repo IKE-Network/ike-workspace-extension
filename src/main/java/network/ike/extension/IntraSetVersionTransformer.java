@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * edge is created, modules sort arbitrarily, and resolution succeeds or
  * fails by luck of the local repository — masked until the first build
  * that needs a version existing nowhere yet, which is exactly what a
- * release cycle creates.
+ * release mission creates.
  *
  * <p><b>The rule</b> (settled 2026-08-16, recorded in the workspace
  * plugin's site as {@code workspace-version-resolution.adoc}):
@@ -39,16 +39,16 @@ import java.util.concurrent.ConcurrentHashMap;
  *       reactor's current version: always align with snapshots.</li>
  *   <li><b>Release</b> (signaled by
  *       {@code -Dike.workspace.release=true}) — a member whose POM
- *       carries a development version is unchanged this cycle: its
+ *       carries a development version is unchanged this mission: its
  *       consumers bind to its most recently <em>released</em> version,
- *       from the cycle records. A member at a non-development version
+ *       from the mission records. A member at a non-development version
  *       has been version-passed — it is releasing — and consumers bind
  *       to that reactor-current value.</li>
  * </ul>
  *
- * <p>The changed set is therefore read from what the release cycle's
+ * <p>The changed set is therefore read from what the release mission's
  * version pass materialized on disk, and the not-releasing versions
- * from {@code releases/release-<cycle>.yaml} — the goal computes, the
+ * from {@code releases/release-<mission>.yaml} — the goal computes, the
  * extension applies. Dependencies that already carry a version (usual
  * for anything external, and for deliberate released pins) pass through
  * untouched; so does every POM outside a working set.
@@ -60,7 +60,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Singleton
 public class IntraSetVersionTransformer implements ModelTransformer {
 
-    /** Release-mode signal, set by the release cycle's reactor builds. */
+    /** Release-mode signal, set by the release mission's reactor builds. */
     static final String RELEASE_MODE_PROPERTY = "ike.workspace.release";
 
     private static final Map<Path, WorkspaceIndex> INDEX_CACHE =
@@ -127,7 +127,7 @@ public class IntraSetVersionTransformer implements ModelTransformer {
      *
      * @param dependency  the dependency under consideration
      * @param index       the working set's artifact index
-     * @param releaseMode whether a release cycle signaled release mode
+     * @param releaseMode whether a release mission signaled release mode
      * @return the version to bind, or {@code null} to pass through
      */
     static String resolve(Dependency dependency, WorkspaceIndex index,
@@ -158,12 +158,12 @@ public class IntraSetVersionTransformer implements ModelTransformer {
         boolean development =
                 produced.currentVersion().endsWith("-SNAPSHOT");
         if (!development) {
-            // Version-passed this cycle: the member is releasing.
+            // Version-passed this mission: the member is releasing.
             return produced.currentVersion();
         }
         String released = index.releasedVersion(produced.member());
         if (released == null) {
-            // Never released and not in this cycle's release set: the
+            // Never released and not in this mission's release set: the
             // release preflights own this refusal; binding the snapshot
             // here would hide it inside a deployed POM.
             System.err.println("[ike-workspace-extension] release mode: "

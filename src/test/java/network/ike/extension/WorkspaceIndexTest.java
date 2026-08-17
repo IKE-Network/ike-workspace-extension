@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * Coverage for {@link WorkspaceIndex} against a filesystem fixture
  * shaped like a real working set (IKE-Network/ike-issues#1019):
  * members with sub-modules that inherit their version from a parent
- * block, a {@code target/} decoy, a nested-repository trap, and cycle
+ * block, a {@code target/} decoy, a nested-repository trap, and mission
  * records where a later record supersedes an earlier one.
  */
 class WorkspaceIndexTest {
@@ -96,8 +96,8 @@ class WorkspaceIndexTest {
                 </project>
                 """);
 
-        // Two cycle records; the later one supersedes for core-lib.
-        write("releases/release-cycle-1.yaml", """
+        // Two mission records; the later one supersedes for core-lib.
+        write("releases/release-mission-1.yaml", """
                 members:
                   core-lib:
                     version: "2.3.0"
@@ -108,7 +108,7 @@ class WorkspaceIndexTest {
                     tag: "1.0.0"
                     recorded: "2026-08-01"
                 """);
-        write("releases/release-cycle-2.yaml", """
+        write("releases/release-mission-2.yaml", """
                 members:
                   core-lib:
                     version: "2.4.0"
@@ -172,23 +172,23 @@ class WorkspaceIndexTest {
     }
 
     /**
-     * Two cycles recorded on the same date — cycle 4 ran past midnight
-     * with cycle 3's date and every bystander bound one generation
-     * stale (ike-issues#1026). The record's numeric cycle suffix (the
+     * Two missions recorded on the same date — mission 4 ran past midnight
+     * with mission 3's date and every bystander bound one generation
+     * stale (ike-issues#1026). The record's numeric mission suffix (the
      * monotonic root version counter) breaks the tie.
      */
     @Test
     void sameDateRecordsResolveToTheHigherCycleNumber()
             throws IOException {
         scanned();
-        write("releases/release-cycle-3.yaml", """
+        write("releases/release-mission-3.yaml", """
                 members:
                   core-lib:
                     version: "2.5.0"
                     tag: "2.5.0"
                     recorded: "2026-08-15"
                 """);
-        write("releases/release-cycle-4.yaml", """
+        write("releases/release-mission-4.yaml", """
                 members:
                   core-lib:
                     version: "2.6.0"

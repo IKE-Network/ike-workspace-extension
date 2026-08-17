@@ -27,8 +27,8 @@ import java.util.stream.Stream;
  *       sub-modules), to the producing member's name and the version
  *       that POM currently carries;</li>
  *   <li><b>released versions</b> — member name to its most recently
- *       released version, read from the cycle records in
- *       {@code releases/release-<cycle>.yaml}, choosing by the row's
+ *       released version, read from the mission records in
+ *       {@code releases/release-<mission>.yaml}, choosing by the row's
  *       recorded date.</li>
  * </ul>
  *
@@ -99,7 +99,7 @@ final class WorkspaceIndex {
 
     /**
      * A member's most recently released version, or {@code null} when
-     * no cycle record names it.
+     * no mission record names it.
      *
      * @param member the member directory name
      * @return the released version, or {@code null}
@@ -110,7 +110,7 @@ final class WorkspaceIndex {
 
     /**
      * Build the index for a workspace root: parse the manifest's member
-     * list, scan each member's POM tree, and read the cycle records.
+     * list, scan each member's POM tree, and read the mission records.
      *
      * @param root the directory holding {@code workspace.yaml}
      * @return the index; empty maps when the manifest is unreadable
@@ -307,7 +307,7 @@ final class WorkspaceIndex {
     }
 
     /**
-     * Member → most recently released version, across every cycle
+     * Member → most recently released version, across every mission
      * record, latest row per member by recorded date.
      *
      * @param root the workspace root
@@ -348,11 +348,11 @@ final class WorkspaceIndex {
                         && line.matches("^    recorded:.*")) {
                     String date = line.replaceAll(
                             "^    recorded:\\s*\"?([^\"]*)\"?\\s*$", "$1");
-                    // Two cycles recorded on the same date tie on the
+                    // Two missions recorded on the same date tie on the
                     // date alone, and the file-listing order then kept
-                    // the OLDER record — cycle 4 ran past midnight with
-                    // cycle 3's date and every bystander bound one
-                    // generation stale (ike-issues#1026). The cycle's
+                    // the OLDER record — mission 4 ran past midnight with
+                    // mission 3's date and every bystander bound one
+                    // generation stale (ike-issues#1026). The mission's
                     // numeric suffix is the root version counter —
                     // monotonic by construction — so it breaks the tie;
                     // the ISO date still dominates across dates.
@@ -371,7 +371,7 @@ final class WorkspaceIndex {
     }
 
     /**
-     * The record's cycle sequence, zero-padded for lexicographic
+     * The record's mission sequence, zero-padded for lexicographic
      * comparison: the trailing digits of
      * {@code release-<label>-<N>.yaml}. Records without a numeric
      * suffix sort lowest.
@@ -390,7 +390,7 @@ final class WorkspaceIndex {
 
     /**
      * Whether a POM lies inside a repository nested under the member —
-     * the same boundary rule the release cycle's version pass applies.
+     * the same boundary rule the release mission's version pass applies.
      *
      * @param memberDir the member being scanned
      * @param pom       a POM beneath it
