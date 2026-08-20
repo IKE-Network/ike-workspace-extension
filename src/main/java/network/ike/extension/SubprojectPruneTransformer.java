@@ -91,7 +91,7 @@ public class SubprojectPruneTransformer implements ModelTransformer {
         if (projectDir == null) {
             return model;
         }
-        if (!Files.exists(projectDir.resolve("workspace.yaml"))) {
+        if (!Manifests.exists(projectDir)) {
             return model;
         }
 

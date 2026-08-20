@@ -198,4 +198,36 @@ class WorkspaceIndexTest {
         WorkspaceIndex index = WorkspaceIndex.scan(root);
         assertEquals("2.6.0", index.releasedVersion("core-lib"));
     }
+
+    /**
+     * The manifest is read under either name: a working set the scaffold
+     * has upgraded carries {@code working-set.yaml}, one it has not still
+     * carries {@code workspace.yaml} (ike-issues#1054).
+     */
+    @Test
+    void manifestIsReadUnderEitherName() throws IOException {
+        String manifest = """
+                subprojects:
+                  core-lib:
+                    repo: https://example.invalid/core-lib.git
+                """;
+        Files.writeString(root.resolve("working-set.yaml"), manifest,
+                StandardCharsets.UTF_8);
+        assertEquals(java.util.List.of("core-lib"),
+                WorkspaceIndex.manifestMembers(Manifests.in(root)));
+
+        Files.delete(root.resolve("working-set.yaml"));
+        Files.writeString(root.resolve("workspace.yaml"), manifest,
+                StandardCharsets.UTF_8);
+        assertEquals(java.util.List.of("core-lib"),
+                WorkspaceIndex.manifestMembers(Manifests.in(root)));
+    }
+
+    /** Neither name present is simply not a working-set root. */
+    @Test
+    void noManifestIsNoMembers() {
+        assertNull(Manifests.in(root));
+        assertEquals(java.util.List.of(),
+                WorkspaceIndex.manifestMembers(Manifests.in(root)));
+    }
 }

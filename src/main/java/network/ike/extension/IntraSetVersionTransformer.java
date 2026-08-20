@@ -189,7 +189,7 @@ public class IntraSetVersionTransformer implements ModelTransformer {
         // is generous; the bound exists so repository-cache POMs with
         // deep paths cost nothing.
         for (int i = 0; i < 8 && dir != null; i++) {
-            if (Files.exists(dir.resolve("workspace.yaml"))) {
+            if (Manifests.exists(dir)) {
                 return dir;
             }
             dir = dir.getParent();

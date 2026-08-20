@@ -112,12 +112,12 @@ final class WorkspaceIndex {
      * Build the index for a workspace root: parse the manifest's member
      * list, scan each member's POM tree, and read the mission records.
      *
-     * @param root the directory holding {@code workspace.yaml}
+     * @param root the working-set root directory
      * @return the index; empty maps when the manifest is unreadable
      */
     static WorkspaceIndex scan(Path root) {
         Map<String, Produced> produced = new HashMap<>();
-        for (String member : manifestMembers(root.resolve("workspace.yaml"))) {
+        for (String member : manifestMembers(Manifests.in(root))) {
             Path memberDir = root.resolve(member);
             if (!Files.isDirectory(memberDir)) {
                 continue;
@@ -271,10 +271,14 @@ final class WorkspaceIndex {
      * {@code subprojects:}. A deliberate line parse — the extension
      * carries no YAML dependency, and the manifest's shape is ours.
      *
-     * @param manifest the workspace.yaml path
+     * @param manifest the manifest path, or {@code null} when absent
      * @return member names in declaration order; empty when unreadable
      */
     static List<String> manifestMembers(Path manifest) {
+        if (manifest == null) {
+            // Not a working-set root under either name.
+            return List.of();
+        }
         try {
             List<String> lines = Files.readAllLines(manifest,
                     StandardCharsets.UTF_8);
