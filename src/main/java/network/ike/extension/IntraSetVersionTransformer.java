@@ -2,12 +2,18 @@ package network.ike.extension;
 
 import org.apache.maven.api.di.Named;
 import org.apache.maven.api.di.Singleton;
+import org.apache.maven.api.model.Build;
+import org.apache.maven.api.model.BuildBase;
 import org.apache.maven.api.model.Dependency;
 import org.apache.maven.api.model.Model;
+import org.apache.maven.api.model.Plugin;
+import org.apache.maven.api.model.PluginExecution;
+import org.apache.maven.api.model.PluginManagement;
+import org.apache.maven.api.model.Profile;
 import org.apache.maven.api.spi.ModelTransformer;
 import org.apache.maven.api.spi.ModelTransformerException;
+import org.apache.maven.api.xml.XmlNode;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +59,37 @@ import java.util.concurrent.ConcurrentHashMap;
  * for anything external, and for deliberate released pins) pass through
  * untouched; so does every POM outside a working set.
  *
+ * <p><b>Where the rule reaches</b> (widened 2026-08-20). A coordinate
+ * naming a working-set member is the same fact wherever it is written,
+ * so the rule is applied at every site in the file model that names one:
+ *
+ * <ul>
+ *   <li>project {@code <dependencies>}, and a profile's;</li>
+ *   <li>a plugin's own {@code <dependencies>}, under {@code <build>} and
+ *       {@code <pluginManagement>} alike — these are ordinary
+ *       {@link Dependency} objects that dependencyManagement does
+ *       <em>not</em> govern, so before this they could only be
+ *       hand-pinned, and the reactor edge a staged plugin jar needs
+ *       existed only as long as someone kept the pin current;</li>
+ *   <li>{@code <artifactItem>} entries in plugin configuration — see
+ *       {@link ArtifactItems}.</li>
+ * </ul>
+ *
+ * <p>The payoff is that a member's version stops being duplicated into
+ * consumer POMs as {@code <member>.version} properties, which is what
+ * went stale: a hand-maintained pin does not survive a sibling reactor's
+ * version rewrite, and ws:align's bundle-edge derivation re-points it
+ * one generation back (ike-issues#1027). Nothing to maintain, nothing
+ * to re-point.
+ *
+ * <p>{@code <dependencyManagement>} is not a binding site. Nothing has
+ * needed it — entries there carry explicit versions by convention, and
+ * an explicit version passes through here anyway. The one case worth
+ * revisiting is a member BOM's own import
+ * ({@code <type>pom</type><scope>import</scope>}), which must track the
+ * reactor line and is still hand-pinned; widening to cover it is a
+ * separate decision, not an oversight.
+ *
  * <p>Every binding is printed once per build — resolution is never
  * silent.
  */
@@ -63,6 +100,11 @@ public class IntraSetVersionTransformer implements ModelTransformer {
     /** Release-mode signal, set by the release mission's reactor builds. */
     static final String RELEASE_MODE_PROPERTY = "ike.workspace.release";
 
+    /** Site labels, appended to the one-line binding report. */
+    private static final String PROJECT = "";
+    private static final String PLUGIN_DEPENDENCY = " (plugin dependency)";
+    private static final String ARTIFACT_ITEM = " (artifactItem)";
+
     private static final Map<Path, WorkspaceIndex> INDEX_CACHE =
             new ConcurrentHashMap<>();
     private static final Map<String, Boolean> PRINTED =
@@ -72,8 +114,9 @@ public class IntraSetVersionTransformer implements ModelTransformer {
     public IntraSetVersionTransformer() {}
 
     /**
-     * Bind versionless intra-set dependencies per the resolution rule.
-     * No-op for POMs outside a working set.
+     * Bind versionless intra-set coordinates per the resolution rule, at
+     * every site the model carries them. No-op for POMs outside a
+     * working set.
      *
      * @param model the file-stage parsed Maven model
      * @return the model with intra-set versions bound — same instance
@@ -92,31 +135,32 @@ public class IntraSetVersionTransformer implements ModelTransformer {
         if (workspaceRoot == null) {
             return model;
         }
-        List<Dependency> dependencies = model.getDependencies();
-        if (dependencies == null || dependencies.isEmpty()) {
-            return model;
-        }
 
         WorkspaceIndex index = INDEX_CACHE.computeIfAbsent(
                 workspaceRoot, WorkspaceIndex::scan);
-        boolean releaseMode =
-                Boolean.getBoolean(RELEASE_MODE_PROPERTY);
+        Binding binding = new Binding(index,
+                Boolean.getBoolean(RELEASE_MODE_PROPERTY));
 
-        List<Dependency> bound = new ArrayList<>(dependencies.size());
-        boolean changed = false;
-        for (Dependency dependency : dependencies) {
-            String resolution = resolve(dependency, index, releaseMode);
-            if (resolution == null) {
-                bound.add(dependency);
-                continue;
-            }
-            bound.add(dependency.withVersion(resolution));
-            changed = true;
-            printOnce(dependency.getGroupId() + ":"
-                    + dependency.getArtifactId() + " -> " + resolution
-                    + (releaseMode ? " [release]" : " [build]"));
+        Model bound = model;
+        List<Dependency> dependencies =
+                binding.dependencies(model.getDependencies(), PROJECT);
+        if (dependencies != null) {
+            bound = bound.withDependencies(dependencies);
         }
-        return changed ? model.withDependencies(bound) : model;
+        Build build = bound.getBuild();
+        if (build != null) {
+            // The cast holds: BuildBase's with* methods are overridden
+            // covariantly by Build, so rebuilding a Build yields a Build.
+            BuildBase reboundBuild = binding.build(build);
+            if (reboundBuild != null) {
+                bound = bound.withBuild((Build) reboundBuild);
+            }
+        }
+        List<Profile> profiles = binding.profiles(bound.getProfiles());
+        if (profiles != null) {
+            bound = bound.withProfiles(profiles);
+        }
+        return bound;
     }
 
     /**
@@ -136,18 +180,38 @@ public class IntraSetVersionTransformer implements ModelTransformer {
         if (version != null && !version.isBlank()) {
             return null;
         }
-        String groupId = dependency.getGroupId();
+        return resolve(dependency.getGroupId(), dependency.getArtifactId(),
+                index, releaseMode);
+    }
+
+    /**
+     * The rule itself, over a bare coordinate — shared by every binding
+     * site, since a plugin dependency and an {@code <artifactItem>} name
+     * a member exactly the way a project dependency does. Callers have
+     * already established that no version is written.
+     *
+     * @param groupId     the coordinate's groupId, possibly an
+     *                    uninterpolated expression or absent
+     * @param artifactId  the coordinate's artifactId
+     * @param index       the working set's artifact index
+     * @param releaseMode whether a release mission signaled release mode
+     * @return the version to bind, or {@code null} to pass through
+     */
+    static String resolve(String groupId, String artifactId,
+                          WorkspaceIndex index, boolean releaseMode) {
+        if (artifactId == null || artifactId.isBlank()) {
+            return null;
+        }
         WorkspaceIndex.Produced produced;
-        if (groupId == null || groupId.contains("${")) {
+        if (groupId == null || groupId.isBlank() || groupId.contains("${")) {
             // The ${project.groupId} sibling idiom: the groupId is an
             // uninterpolated expression at file-model time, so identity
             // comes from the artifactId — and only when exactly one
             // member produces it. The expression itself stays in the
             // model untouched; only the version is bound.
-            produced = index.producedByUniqueArtifactId(
-                    dependency.getArtifactId());
+            produced = index.producedByUniqueArtifactId(artifactId);
         } else {
-            produced = index.produced(groupId, dependency.getArtifactId());
+            produced = index.produced(groupId, artifactId);
         }
         if (produced == null) {
             return null;
@@ -167,13 +231,203 @@ public class IntraSetVersionTransformer implements ModelTransformer {
             // release preflights own this refusal; binding the snapshot
             // here would hide it inside a deployed POM.
             System.err.println("[ike-workspace-extension] release mode: "
-                    + dependency.getGroupId() + ":"
-                    + dependency.getArtifactId() + " is produced by "
-                    + produced.member() + ", which has never released —"
+                    + groupId + ":" + artifactId
+                    + " is produced by " + produced.member()
+                    + ", which has never released —"
                     + " leaving the dependency unbound");
             return null;
         }
         return released;
+    }
+
+    /**
+     * One build's worth of binding: the index and mode, plus the
+     * traversal of every site that can name a member. Each method
+     * returns {@code null} when it changed nothing, so an untouched
+     * model is returned as the very instance Maven handed over.
+     */
+    private static final class Binding implements ArtifactItems.Resolver {
+
+        private final WorkspaceIndex index;
+        private final boolean releaseMode;
+
+        Binding(WorkspaceIndex index, boolean releaseMode) {
+            this.index = index;
+            this.releaseMode = releaseMode;
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * <p>The {@code <artifactItem>} site, reached from
+         * {@link ArtifactItems}.
+         */
+        @Override
+        public String version(String groupId, String artifactId) {
+            String resolution =
+                    resolve(groupId, artifactId, index, releaseMode);
+            if (resolution != null) {
+                report(groupId, artifactId, resolution, ARTIFACT_ITEM);
+            }
+            return resolution;
+        }
+
+        /**
+         * Bind a dependency list.
+         *
+         * @param declared the declared dependencies, possibly null
+         * @param site     the site label for the binding report
+         * @return the bound list, or {@code null} when unchanged
+         */
+        List<Dependency> dependencies(List<Dependency> declared, String site) {
+            if (declared == null || declared.isEmpty()) {
+                return null;
+            }
+            List<Dependency> bound = new ArrayList<>(declared.size());
+            boolean changed = false;
+            for (Dependency dependency : declared) {
+                String resolution = resolve(dependency, index, releaseMode);
+                if (resolution == null) {
+                    bound.add(dependency);
+                    continue;
+                }
+                bound.add(dependency.withVersion(resolution));
+                changed = true;
+                report(dependency.getGroupId(), dependency.getArtifactId(),
+                        resolution, site);
+            }
+            return changed ? bound : null;
+        }
+
+        /**
+         * Bind a build section — its plugins and its plugin management.
+         *
+         * @param build the build section, {@code <build>} or a profile's
+         * @return the bound section, or {@code null} when unchanged
+         */
+        BuildBase build(BuildBase build) {
+            BuildBase bound = build;
+            List<Plugin> plugins = plugins(build.getPlugins());
+            if (plugins != null) {
+                bound = bound.withPlugins(plugins);
+            }
+            PluginManagement management = build.getPluginManagement();
+            if (management != null) {
+                List<Plugin> managed = plugins(management.getPlugins());
+                if (managed != null) {
+                    bound = bound.withPluginManagement(
+                            management.withPlugins(managed));
+                }
+            }
+            return bound == build ? null : bound;
+        }
+
+        /**
+         * Bind each plugin's own dependencies and its configuration —
+         * plugin level and per execution.
+         *
+         * @param declared the declared plugins, possibly null
+         * @return the bound list, or {@code null} when unchanged
+         */
+        List<Plugin> plugins(List<Plugin> declared) {
+            if (declared == null || declared.isEmpty()) {
+                return null;
+            }
+            List<Plugin> bound = new ArrayList<>(declared.size());
+            boolean changed = false;
+            for (Plugin plugin : declared) {
+                Plugin rebound = plugin;
+                List<Dependency> dependencies = dependencies(
+                        plugin.getDependencies(), PLUGIN_DEPENDENCY);
+                if (dependencies != null) {
+                    rebound = rebound.withDependencies(dependencies);
+                }
+                XmlNode configuration =
+                        ArtifactItems.bind(plugin.getConfiguration(), this);
+                if (configuration != null) {
+                    rebound = rebound.withConfiguration(configuration);
+                }
+                List<PluginExecution> executions =
+                        executions(plugin.getExecutions());
+                if (executions != null) {
+                    rebound = rebound.withExecutions(executions);
+                }
+                if (rebound != plugin) {
+                    changed = true;
+                }
+                bound.add(rebound);
+            }
+            return changed ? bound : null;
+        }
+
+        /**
+         * Bind the configuration of each execution — an execution may
+         * carry its own {@code <artifactItems>}.
+         *
+         * @param declared the declared executions, possibly null
+         * @return the bound list, or {@code null} when unchanged
+         */
+        List<PluginExecution> executions(List<PluginExecution> declared) {
+            if (declared == null || declared.isEmpty()) {
+                return null;
+            }
+            List<PluginExecution> bound = new ArrayList<>(declared.size());
+            boolean changed = false;
+            for (PluginExecution execution : declared) {
+                XmlNode configuration = ArtifactItems.bind(
+                        execution.getConfiguration(), this);
+                if (configuration == null) {
+                    bound.add(execution);
+                    continue;
+                }
+                bound.add(execution.withConfiguration(configuration));
+                changed = true;
+            }
+            return changed ? bound : null;
+        }
+
+        /**
+         * Bind each profile's dependencies and build section. A profile
+         * is not activated yet at file-model time, so binding it is not
+         * a decision about whether it applies — only about what it says
+         * if it does.
+         *
+         * @param declared the declared profiles, possibly null
+         * @return the bound list, or {@code null} when unchanged
+         */
+        List<Profile> profiles(List<Profile> declared) {
+            if (declared == null || declared.isEmpty()) {
+                return null;
+            }
+            List<Profile> bound = new ArrayList<>(declared.size());
+            boolean changed = false;
+            for (Profile profile : declared) {
+                Profile rebound = profile;
+                List<Dependency> dependencies =
+                        dependencies(profile.getDependencies(), PROJECT);
+                if (dependencies != null) {
+                    rebound = rebound.withDependencies(dependencies);
+                }
+                BuildBase build = profile.getBuild();
+                if (build != null) {
+                    BuildBase reboundBuild = build(build);
+                    if (reboundBuild != null) {
+                        rebound = rebound.withBuild(reboundBuild);
+                    }
+                }
+                if (rebound != profile) {
+                    changed = true;
+                }
+                bound.add(rebound);
+            }
+            return changed ? bound : null;
+        }
+
+        private void report(String groupId, String artifactId,
+                            String resolution, String site) {
+            printOnce(groupId + ":" + artifactId + " -> " + resolution
+                    + (releaseMode ? " [release]" : " [build]") + site);
+        }
     }
 
     /**

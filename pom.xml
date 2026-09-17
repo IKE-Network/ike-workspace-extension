@@ -120,12 +120,13 @@
     </dependencies>
 
     <!--
-        No in-repo tests. The transformer's behavior is exercised by
-        WsScaffoldInitMojoTest in ike-platform/ike-workspace-maven-plugin
-        (where the test harness, JUnit/AssertJ versions, and reactor
-        plumbing already live). Keeping this artifact pure-library lets
-        ike-base-parent be a clean Tier 0 inheritance with no test-stack
-        baggage.
+        In-repo tests cover the model-shaping logic directly — the
+        resolution rule and how far it reaches into the file model. The
+        wiring above them (reactor plumbing, scaffold bootstrap) is
+        exercised by WsScaffoldInitMojoTest in
+        ike-platform/ike-workspace-maven-plugin, where that harness
+        already lives. JUnit alone keeps this a Tier 0 inheritance of
+        ike-base-parent with no wider test-stack baggage.
     -->
 
     <build>
