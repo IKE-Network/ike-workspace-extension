@@ -122,7 +122,7 @@ final class WorkspaceIndex {
             if (!Files.isDirectory(memberDir)) {
                 continue;
             }
-            try (Stream<Path> tree = Files.walk(memberDir)) {
+            try {
                 // Depth-sorted so a directory's POM resolves before its
                 // children's: Maven 4.1 models may declare an empty
                 // <parent/> and omit groupId and version entirely,
@@ -130,10 +130,7 @@ final class WorkspaceIndex {
                 // (parent inference). The index performs the same
                 // inference, or inference-style modules — the exact
                 // shape that broke the reactor sort — never enter it.
-                List<Path> poms = tree
-                        .filter(p -> p.getFileName().toString().equals("pom.xml"))
-                        .filter(p -> !p.toString().contains("/target/"))
-                        .filter(p -> !crossesRepositoryBoundary(memberDir, p))
+                List<Path> poms = memberPoms(memberDir).stream()
                         .sorted(java.util.Comparator.comparingInt(
                                 Path::getNameCount))
                         .toList();
@@ -393,22 +390,86 @@ final class WorkspaceIndex {
     }
 
     /**
-     * Whether a POM lies inside a repository nested under the member —
-     * the same boundary rule the release mission's version pass applies.
+     * Every {@code pom.xml} a member owns: its root and sub-modules
+     * (IKE-Network/ike-issues#1163).
      *
-     * @param memberDir the member being scanned
-     * @param pom       a POM beneath it
-     * @return {@code true} when a directory between the two is itself
-     *         a repository
+     * <p>Subtrees that cannot hold a module of this member are pruned,
+     * never traversed:
+     * <ul>
+     *   <li>a module's build directory, {@code target} next to a
+     *       {@code pom.xml}, and {@code .mvn/target}, where Maven 4 keeps
+     *       the project-local repository. Both are rewritten while builds
+     *       run;</li>
+     *   <li>{@code .git};</li>
+     *   <li>a nested repository: a subdirectory with its own {@code .git},
+     *       whose POMs belong to that repository, not to this member.</li>
+     * </ul>
+     * <p>An entry that cannot be read or has vanished mid-walk never fails
+     * the scan. Outside the pruned subtrees an unreadable directory is
+     * warned about by path, because it could hide a module's POM; a
+     * vanished file is skipped.
+     *
+     * @param memberDir the member's root directory
+     * @return the member's POM files, in walk order
+     * @throws IOException if the member's root itself cannot be walked
      */
-    private static boolean crossesRepositoryBoundary(Path memberDir, Path pom) {
-        Path dir = pom.getParent();
-        while (dir != null && !dir.equals(memberDir)) {
-            if (Files.exists(dir.resolve(".git"))) {
-                return true;
+    static List<Path> memberPoms(Path memberDir) throws IOException {
+        List<Path> poms = new java.util.ArrayList<>();
+        Files.walkFileTree(memberDir, new java.nio.file.SimpleFileVisitor<>() {
+            @Override
+            public java.nio.file.FileVisitResult preVisitDirectory(
+                    Path dir, java.nio.file.attribute.BasicFileAttributes attributes) {
+                return pruned(memberDir, dir)
+                        ? java.nio.file.FileVisitResult.SKIP_SUBTREE
+                        : java.nio.file.FileVisitResult.CONTINUE;
             }
-            dir = dir.getParent();
+
+            @Override
+            public java.nio.file.FileVisitResult visitFile(
+                    Path file, java.nio.file.attribute.BasicFileAttributes attributes) {
+                if (file.getFileName().toString().equals("pom.xml")) {
+                    poms.add(file);
+                }
+                return java.nio.file.FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public java.nio.file.FileVisitResult visitFileFailed(Path path, IOException e) {
+                if (!(e instanceof java.nio.file.NoSuchFileException)
+                        && !pruned(memberDir, path)) {
+                    System.err.println("[ike-workspace-extension] cannot read " + path
+                            + " (" + e.getClass().getSimpleName() + "); any module"
+                            + " POM under it is not indexed");
+                }
+                return java.nio.file.FileVisitResult.CONTINUE;
+            }
+        });
+        return poms;
+    }
+
+    /**
+     * Whether a directory's subtree is left out of a member's walk: a
+     * module's build directory, {@code .mvn/target}, {@code .git}, or a
+     * nested repository's root. The member's root is never pruned.
+     *
+     * @param memberDir the member's root directory
+     * @param dir       a directory under it
+     * @return {@code true} to skip the subtree
+     */
+    static boolean pruned(Path memberDir, Path dir) {
+        if (dir.equals(memberDir)) {
+            return false;
         }
-        return false;
+        String name = dir.getFileName().toString();
+        Path parent = dir.getParent();
+        if (name.equals(".git")) {
+            return true;
+        }
+        if (name.equals("target") && parent != null
+                && (Files.exists(parent.resolve("pom.xml"))
+                    || parent.getFileName().toString().equals(".mvn"))) {
+            return true;
+        }
+        return Files.exists(dir.resolve(".git"));
     }
 }
