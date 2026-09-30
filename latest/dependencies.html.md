@@ -68,7 +68,7 @@ The following is a list of test dependencies for this project. These dependencie
 
 ## [Dependency Tree](#dependency-tree)
 
-- network.ike.tooling:ike-workspace-extension:jar:12 ** 
+- network.ike.tooling:ike-workspace-extension:jar:13 ** 
   
   | IKE Workspace Extension |
   | --- |

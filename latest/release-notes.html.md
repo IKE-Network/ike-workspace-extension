@@ -148,9 +148,3 @@ canonical_url: https://ike.network/ike-workspace-extension/release-notes.html
 ### [Internal](#internal_14)
 
 - Async Maven Central deploy with sentinel-file status tracking ([#484](https://github.com/IKE-Network/ike-issues/issues/484)[36])
-
-## [ike-tooling v196](#ike-tooling-v196)
-
-### [Internal](#internal_15)
-
-- Nexus-first two-phase deploy with retries in ike:release-publish ([#482](https://github.com/IKE-Network/ike-issues/issues/482)[37])
