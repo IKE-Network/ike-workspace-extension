@@ -24,6 +24,7 @@ The following is a list of test dependencies for this project. These dependencie
 | GroupId | ArtifactId | Version | Type | Licenses |
 | --- | --- | --- | --- | --- |
 | org.junit.jupiter | [junit-jupiter](https://junit.org/)[6] | 6.0.0 | jar | [Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-v20.html)[7] |
+| org.slf4j | [slf4j-simple](http://www.slf4j.org)[8] | 2.0.17 | jar | [MIT](https://opensource.org/license/mit)[9] |
 
 ## [provided](#provided)
 
@@ -31,7 +32,8 @@ The following is a list of provided dependencies for this project. These depende
 
 | GroupId | ArtifactId | Version | Classifier | Type | Licenses |
 | --- | --- | --- | --- | --- | --- |
-| network.ike | [ike-base-parent](https://ike.network/ike-base-parent/)[8] | 15 | site-theme | zip | [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+| network.ike | [ike-base-parent](https://ike.network/ike-base-parent/)[10] | 15 | site-theme | zip | [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+| org.slf4j | [slf4j-api](http://www.slf4j.org)[8] | 2.0.17 | - | jar | [MIT](https://opensource.org/license/mit)[9] |
 
 # Project Transitive Dependencies
 
@@ -43,11 +45,11 @@ The following is a list of compile dependencies for this project. These dependen
 
 | GroupId | ArtifactId | Version | Type | Licenses |
 | --- | --- | --- | --- | --- |
-| org.apache.maven | [maven-api-annotations](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-annotations/)[9] | 4.0.0-rc-5 | jar | [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
-| org.apache.maven | [maven-api-plugin](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-plugin/)[10] | 4.0.0-rc-5 | jar | [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
-| org.apache.maven | [maven-api-settings](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-settings/)[11] | 4.0.0-rc-5 | jar | [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
-| org.apache.maven | [maven-api-toolchain](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-toolchain/)[12] | 4.0.0-rc-5 | jar | [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
-| org.apache.maven | [maven-api-xml](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-xml/)[13] | 4.0.0-rc-5 | jar | [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+| org.apache.maven | [maven-api-annotations](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-annotations/)[11] | 4.0.0-rc-5 | jar | [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+| org.apache.maven | [maven-api-plugin](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-plugin/)[12] | 4.0.0-rc-5 | jar | [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+| org.apache.maven | [maven-api-settings](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-settings/)[13] | 4.0.0-rc-5 | jar | [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+| org.apache.maven | [maven-api-toolchain](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-toolchain/)[14] | 4.0.0-rc-5 | jar | [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+| org.apache.maven | [maven-api-xml](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-xml/)[15] | 4.0.0-rc-5 | jar | [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
 
 ## [test](#test_2)
 
@@ -55,24 +57,24 @@ The following is a list of test dependencies for this project. These dependencie
 
 | GroupId | ArtifactId | Version | Type | Licenses |
 | --- | --- | --- | --- | --- |
-| org.apiguardian | [apiguardian-api](https://github.com/apiguardian-team/apiguardian)[14] | 1.1.2 | jar | [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)[15] |
-| org.jspecify | [jspecify](http://jspecify.org/)[16] | 1.0.0 | jar | [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)[15] |
+| org.apiguardian | [apiguardian-api](https://github.com/apiguardian-team/apiguardian)[16] | 1.1.2 | jar | [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)[17] |
+| org.jspecify | [jspecify](http://jspecify.org/)[18] | 1.0.0 | jar | [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)[17] |
 | org.junit.jupiter | [junit-jupiter-api](https://junit.org/)[6] | 6.0.0 | jar | [Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-v20.html)[7] |
 | org.junit.jupiter | [junit-jupiter-engine](https://junit.org/)[6] | 6.0.0 | jar | [Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-v20.html)[7] |
 | org.junit.jupiter | [junit-jupiter-params](https://junit.org/)[6] | 6.0.0 | jar | [Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-v20.html)[7] |
 | org.junit.platform | [junit-platform-commons](https://junit.org/)[6] | 6.0.0 | jar | [Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-v20.html)[7] |
 | org.junit.platform | [junit-platform-engine](https://junit.org/)[6] | 6.0.0 | jar | [Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-v20.html)[7] |
-| org.opentest4j | [opentest4j](https://github.com/ota4j-team/opentest4j)[17] | 1.3.0 | jar | [The Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+| org.opentest4j | [opentest4j](https://github.com/ota4j-team/opentest4j)[19] | 1.3.0 | jar | [The Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
 
 # Project Dependency Graph
 
 ## [Dependency Tree](#dependency-tree)
 
-- network.ike.tooling:ike-workspace-extension:jar:13 ** 
+- network.ike.tooling:ike-workspace-extension:jar:14 ** 
   
   | IKE Workspace Extension |
   | --- |
-  | **Description: **Maven 4 build extension that prunes non-existent <subprojects> entries from workspace POMs before model validation. Lets a fresh clone of an IKE workspace bootstrap with mvn ws:scaffold-init before any subproject directory is on disk. **URL: **[https://ike.network/ike-workspace-extension/](https://ike.network/ike-workspace-extension/)[18] **Project Licenses: **[Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+  | **Description: **Maven 4 build extension that prunes non-existent <subprojects> entries from workspace POMs before model validation. Lets a fresh clone of an IKE workspace bootstrap with mvn ws:scaffold-init before any subproject directory is on disk. **URL: **[https://ike.network/ike-workspace-extension/](https://ike.network/ike-workspace-extension/)[20] **Project Licenses: **[Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
   
     - org.apache.maven:maven-api-spi:jar:4.0.0-rc-5 (compile) ** 
       
@@ -84,7 +86,7 @@ The following is a list of test dependencies for this project. These dependencie
             
             | Maven 4 API :: Meta annotations |
             | --- |
-            | **Description: **Maven 4 API - Java meta annotations. **URL: **[https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-annotations/](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-annotations/)[9] **Project Licenses: **[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+            | **Description: **Maven 4 API - Java meta annotations. **URL: **[https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-annotations/](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-annotations/)[11] **Project Licenses: **[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
     - org.junit.jupiter:junit-jupiter:jar:6.0.0 (test) ** 
       
       | JUnit Jupiter (Aggregator) |
@@ -101,7 +103,7 @@ The following is a list of test dependencies for this project. These dependencie
                     
                     | org.opentest4j:opentest4j |
                     | --- |
-                    | **Description: **Open Test Alliance for the JVM **URL: **[https://github.com/ota4j-team/opentest4j](https://github.com/ota4j-team/opentest4j)[17] **Project Licenses: **[The Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+                    | **Description: **Open Test Alliance for the JVM **URL: **[https://github.com/ota4j-team/opentest4j](https://github.com/ota4j-team/opentest4j)[19] **Project Licenses: **[The Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
                   - org.junit.platform:junit-platform-commons:jar:6.0.0 (test) ** 
                     
                     | JUnit Platform Commons |
@@ -111,12 +113,12 @@ The following is a list of test dependencies for this project. These dependencie
                     
                     | org.apiguardian:apiguardian-api |
                     | --- |
-                    | **Description: **@API Guardian **URL: **[https://github.com/apiguardian-team/apiguardian](https://github.com/apiguardian-team/apiguardian)[14] **Project Licenses: **[The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)[15] |
+                    | **Description: **@API Guardian **URL: **[https://github.com/apiguardian-team/apiguardian](https://github.com/apiguardian-team/apiguardian)[16] **Project Licenses: **[The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)[17] |
                   - org.jspecify:jspecify:jar:1.0.0 (test) ** 
                     
                     | JSpecify annotations |
                     | --- |
-                    | **Description: **An artifact of well-named and well-specified annotations to power static analysis checks **URL: **[http://jspecify.org/](http://jspecify.org/)[16] **Project Licenses: **[The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)[15] |
+                    | **Description: **An artifact of well-named and well-specified annotations to power static analysis checks **URL: **[http://jspecify.org/](http://jspecify.org/)[18] **Project Licenses: **[The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)[17] |
           - org.junit.jupiter:junit-jupiter-params:jar:6.0.0 (test) ** 
             
             | JUnit Jupiter Params |
@@ -143,22 +145,22 @@ The following is a list of test dependencies for this project. These dependencie
             
             | Maven 4 API :: Settings |
             | --- |
-            | **Description: **Maven 4 API - Immutable Settings model. **URL: **[https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-settings/](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-settings/)[11] **Project Licenses: **[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+            | **Description: **Maven 4 API - Immutable Settings model. **URL: **[https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-settings/](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-settings/)[13] **Project Licenses: **[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
           - org.apache.maven:maven-api-toolchain:jar:4.0.0-rc-5 (compile) ** 
             
             | Maven 4 API :: Toolchain |
             | --- |
-            | **Description: **Maven 4 API - Immutable Toolchain model. **URL: **[https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-toolchain/](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-toolchain/)[12] **Project Licenses: **[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+            | **Description: **Maven 4 API - Immutable Toolchain model. **URL: **[https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-toolchain/](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-toolchain/)[14] **Project Licenses: **[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
           - org.apache.maven:maven-api-plugin:jar:4.0.0-rc-5 (compile) ** 
             
             | Maven 4 API :: Plugin |
             | --- |
-            | **Description: **Maven 4 API - Immutable Plugin model. **URL: **[https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-plugin/](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-plugin/)[10] **Project Licenses: **[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+            | **Description: **Maven 4 API - Immutable Plugin model. **URL: **[https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-plugin/](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-plugin/)[12] **Project Licenses: **[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
           - org.apache.maven:maven-api-xml:jar:4.0.0-rc-5 (compile) ** 
             
             | Maven 4 API :: XML |
             | --- |
-            | **Description: **Maven 4 API - Immutable XML. **URL: **[https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-xml/](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-xml/)[13] **Project Licenses: **[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+            | **Description: **Maven 4 API - Immutable XML. **URL: **[https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-xml/](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-xml/)[15] **Project Licenses: **[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
     - org.apache.maven:maven-api-model:jar:4.0.0-rc-5 (compile) ** 
       
       | Maven 4 API :: Model |
@@ -169,11 +171,21 @@ The following is a list of test dependencies for this project. These dependencie
       | Maven 4 API :: Dependency Injection |
       | --- |
       | **Description: **Maven 4 API - Dependency Injection **URL: **[https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-di/](https://maven.apache.org/ref/4.0.0-rc-5/api/maven-api-di/)[3] **Project Licenses: **[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+    - org.slf4j:slf4j-api:jar:2.0.17 (provided) ** 
+      
+      | SLF4J API Module |
+      | --- |
+      | **Description: **The slf4j API **URL: **[http://www.slf4j.org](http://www.slf4j.org)[8] **Project Licenses: **[MIT](https://opensource.org/license/mit)[9] |
+    - org.slf4j:slf4j-simple:jar:2.0.17 (test) ** 
+      
+      | SLF4J Simple Provider |
+      | --- |
+      | **Description: **SLF4J Simple Provider **URL: **[http://www.slf4j.org](http://www.slf4j.org)[8] **Project Licenses: **[MIT](https://opensource.org/license/mit)[9] |
     - network.ike:ike-base-parent:zip:site-theme:15 (provided) ** 
       
       | IKE Base Parent |
       | --- |
-      | **Description: **Tier 0 foundation parent for the IKE Network — the apex of the parent inheritance forest, inherited by ike-tooling, ike-docs, and ike-platform. Carries shared publishing metadata, GPG signing, and Maven Central publishing configuration. **URL: **[https://ike.network/ike-base-parent/](https://ike.network/ike-base-parent/)[8] **Project Licenses: **[Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
+      | **Description: **Tier 0 foundation parent for the IKE Network — the apex of the parent inheritance forest, inherited by ike-tooling, ike-docs, and ike-platform. Carries shared publishing metadata, GPG signing, and Maven Central publishing configuration. **URL: **[https://ike.network/ike-base-parent/](https://ike.network/ike-base-parent/)[10] **Project Licenses: **[Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)[2] |
 
 # Licenses
 
@@ -184,6 +196,8 @@ The following is a list of test dependencies for this project. These dependencie
 **Apache-2.0: **Maven 4 API :: Core, Maven 4 API :: Dependency Injection, Maven 4 API :: Meta annotations, Maven 4 API :: Model, Maven 4 API :: Plugin, Maven 4 API :: SPI, Maven 4 API :: Settings, Maven 4 API :: Toolchain, Maven 4 API :: XML
 
 **Eclipse Public License v2.0: **JUnit Jupiter (Aggregator), JUnit Jupiter API, JUnit Jupiter Engine, JUnit Jupiter Params, JUnit Platform Commons, JUnit Platform Engine API
+
+**MIT: **SLF4J API Module, SLF4J Simple Provider
 
 # Dependency File Details
 
@@ -210,7 +224,13 @@ The following is a list of test dependencies for this project. These dependencie
 | junit-platform-commons-6.0.0.jar | 171.1 kB | 103 | 87 | 10 | 17 | Yes |
 | junit-platform-engine-6.0.0.jar | 277.6 kB | 193 | 175 | 9 | 17 | Yes |
 | opentest4j-1.3.0.jar | 14.3 kB | 15 | 9 | 2 | 1.6 | Yes |
-| 19 | 2.1 MB | 1671 | 1410 | 69 | 17 | 16 |
+| slf4j-api-2.0.17.jar | 69.9 kB | 71 | - | - | - | - |
+|    • Root | - | 69 | 55 | 4 | 1.8 | Yes |
+|    • Versioned | - | 2 | 1 | 1 | 9 | No |
+| slf4j-simple-2.0.17.jar | 15.7 kB | 22 | - | - | - | - |
+|    • Root | - | 20 | 6 | 1 | 1.8 | Yes |
+|    • Versioned | - | 2 | 1 | 1 | 9 | No |
+| 21 | 2.2 MB | 1764 | 1471 | 74 | 17 | 18 |
 | compile: 9 | compile: 730 kB | compile: 705 | compile: 558 | compile: 17 | 17 | compile: 9 |
-| provided: 1 | provided: 3.4 kB | - | - | - | - |
-| test: 9 | test: 1.4 MB | test: 966 | test: 852 | test: 52 | 17 | test: 7 |
+| provided: 2 | provided: 73.3 kB | provided: 71 | provided: 55 | provided: 4 | provided: 1 |
+| test: 10 | test: 1.4 MB | test: 988 | test: 858 | test: 53 | 17 | test: 8 |
