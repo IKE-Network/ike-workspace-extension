@@ -13,6 +13,8 @@ import org.apache.maven.api.model.Profile;
 import org.apache.maven.api.spi.ModelTransformer;
 import org.apache.maven.api.spi.ModelTransformerException;
 import org.apache.maven.api.xml.XmlNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -90,12 +92,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * reactor line and is still hand-pinned; widening to cover it is a
  * separate decision, not an oversight.
  *
- * <p>Every binding is printed once per build — resolution is never
- * silent.
+ * <p>Resolution is never silent: each working set is announced once per
+ * build at info, and every binding is logged once at debug ({@code -X}
+ * lists them). Maven relays anything an extension writes to standard
+ * error as a warning, so the log is the channel.
  */
 @Named("ike-workspace-intra-set-versions")
 @Singleton
 public class IntraSetVersionTransformer implements ModelTransformer {
+
+    private static final Logger LOG = LoggerFactory.getLogger(IntraSetVersionTransformer.class);
 
     /** Release-mode signal, set by the release mission's reactor builds. */
     static final String RELEASE_MODE_PROPERTY = "ike.workspace.release";
@@ -108,6 +114,8 @@ public class IntraSetVersionTransformer implements ModelTransformer {
     private static final Map<Path, WorkspaceIndex> INDEX_CACHE =
             new ConcurrentHashMap<>();
     private static final Map<String, Boolean> PRINTED =
+            new ConcurrentHashMap<>();
+    private static final Map<Path, Boolean> ANNOUNCED =
             new ConcurrentHashMap<>();
 
     /** Creates the transformer. DI-only; not for direct construction. */
@@ -138,6 +146,11 @@ public class IntraSetVersionTransformer implements ModelTransformer {
 
         WorkspaceIndex index = INDEX_CACHE.computeIfAbsent(
                 workspaceRoot, WorkspaceIndex::scan);
+        if (ANNOUNCED.putIfAbsent(workspaceRoot, Boolean.TRUE) == null) {
+            LOG.info("[ike-workspace-extension] binding intra-set coordinates of {}"
+                    + " to the reactor's versions (each binding is listed at debug)",
+                    workspaceRoot.getFileName());
+        }
         Binding binding = new Binding(index,
                 Boolean.getBoolean(RELEASE_MODE_PROPERTY));
 
@@ -230,11 +243,9 @@ public class IntraSetVersionTransformer implements ModelTransformer {
             // Never released and not in this mission's release set: the
             // release preflights own this refusal; binding the snapshot
             // here would hide it inside a deployed POM.
-            System.err.println("[ike-workspace-extension] release mode: "
-                    + groupId + ":" + artifactId
-                    + " is produced by " + produced.member()
-                    + ", which has never released —"
-                    + " leaving the dependency unbound");
+            LOG.warn("[ike-workspace-extension] release mode: {}:{} is produced by {},"
+                    + " which has never released — leaving the dependency unbound",
+                    groupId, artifactId, produced.member());
             return null;
         }
         return released;
@@ -453,7 +464,7 @@ public class IntraSetVersionTransformer implements ModelTransformer {
 
     private static void printOnce(String line) {
         if (PRINTED.putIfAbsent(line, Boolean.TRUE) == null) {
-            System.err.println("[ike-workspace-extension] " + line);
+            LOG.debug("[ike-workspace-extension] {}", line);
         }
     }
 }

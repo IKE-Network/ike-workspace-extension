@@ -77,6 +77,8 @@
     </distributionManagement>
 
     <properties>
+        <!-- The slf4j Maven 4.0.0-rc-5 ships (lib/slf4j-api). -->
+        <slf4j.version>2.0.17</slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.deploy.skip>false</maven.deploy.skip>
         <maven.install.skip>false</maven.install.skip>
@@ -115,6 +117,21 @@
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-api-di</artifactId>
             <version>${maven.version}</version>
+        </dependency>
+        <!-- Maven exports org.slf4j to core extensions, so the API is provided
+             by the running Maven; the simple binding is for the tests, which
+             read the extension's warnings off standard error. -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

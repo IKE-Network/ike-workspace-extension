@@ -3,6 +3,8 @@ package network.ike.extension;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -38,6 +40,8 @@ import java.util.stream.Stream;
  * interpolated anyway, and the extension must not grow dependencies.
  */
 final class WorkspaceIndex {
+
+    private static final Logger LOG = LoggerFactory.getLogger(WorkspaceIndex.class);
 
     /**
      * One produced artifact.
@@ -157,8 +161,7 @@ final class WorkspaceIndex {
                     }
                 }
             } catch (IOException e) {
-                System.err.println("[ike-workspace-extension] cannot scan "
-                        + memberDir + ": " + e.getMessage());
+                LOG.warn("[ike-workspace-extension] cannot scan {}: {}", memberDir, e.getMessage());
             }
         }
         return new WorkspaceIndex(produced, releasedVersions(root));
@@ -326,8 +329,7 @@ final class WorkspaceIndex {
                     .filter(p -> p.getFileName().toString().endsWith(".yaml"))
                     .forEach(record -> readRecord(record, version, recordedDate));
         } catch (IOException e) {
-            System.err.println("[ike-workspace-extension] cannot list "
-                    + releases + ": " + e.getMessage());
+            LOG.warn("[ike-workspace-extension] cannot list {}: {}", releases, e.getMessage());
         }
         return version;
     }
@@ -366,8 +368,7 @@ final class WorkspaceIndex {
                 }
             }
         } catch (IOException e) {
-            System.err.println("[ike-workspace-extension] cannot read "
-                    + record + ": " + e.getMessage());
+            LOG.warn("[ike-workspace-extension] cannot read {}: {}", record, e.getMessage());
         }
     }
 
@@ -437,9 +438,8 @@ final class WorkspaceIndex {
             public java.nio.file.FileVisitResult visitFileFailed(Path path, IOException e) {
                 if (!(e instanceof java.nio.file.NoSuchFileException)
                         && !pruned(memberDir, path)) {
-                    System.err.println("[ike-workspace-extension] cannot read " + path
-                            + " (" + e.getClass().getSimpleName() + "); any module"
-                            + " POM under it is not indexed");
+                    LOG.warn("[ike-workspace-extension] cannot read {} ({}); any module"
+                            + " POM under it is not indexed", path, e.getClass().getSimpleName());
                 }
                 return java.nio.file.FileVisitResult.CONTINUE;
             }

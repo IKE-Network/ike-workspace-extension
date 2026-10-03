@@ -6,6 +6,8 @@ import org.apache.maven.api.model.Model;
 import org.apache.maven.api.model.Profile;
 import org.apache.maven.api.spi.ModelTransformer;
 import org.apache.maven.api.spi.ModelTransformerException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -67,6 +69,8 @@ import java.util.List;
 @Singleton
 public class SubprojectPruneTransformer implements ModelTransformer {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SubprojectPruneTransformer.class);
+
     /** Creates the transformer. DI-only; not for direct construction. */
     public SubprojectPruneTransformer() {}
 
@@ -118,8 +122,7 @@ public class SubprojectPruneTransformer implements ModelTransformer {
         if (dropped.isEmpty()) {
             return model;
         }
-        System.err.println("[ike-workspace-extension] pruned missing <subprojects>: "
-                + dropped);
+        LOG.info("[ike-workspace-extension] pruned missing <subprojects>: {}", dropped);
         return model.withSubprojects(kept);
     }
 
@@ -140,8 +143,8 @@ public class SubprojectPruneTransformer implements ModelTransformer {
         if (dropped.isEmpty()) {
             return model;
         }
-        System.err.println("[ike-workspace-extension] stripped profiles with"
-                + " missing <file><exists> targets: " + dropped);
+        LOG.info("[ike-workspace-extension] stripped profiles with"
+                + " missing <file><exists> targets: {}", dropped);
         return model.withProfiles(kept);
     }
 
