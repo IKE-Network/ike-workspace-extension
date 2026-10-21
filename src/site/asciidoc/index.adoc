@@ -34,11 +34,44 @@ transformer:
 
 Every other POM passes through untouched.
 
+== Build lock and missing-module diagnosis
+
+Every working-set build takes an exclusive OS file lock on
+`<root>/.mvn/target/build.lock` when project discovery starts and
+holds it until the session ends. A second build of the same tree
+waits, saying every 30 seconds who holds the lock (pid, host, start
+time, goals and `-pl`), and fails after `-Dike.build.lock.timeout`
+(default `30m`; `PT45M`, `90s`, `2h` also work) with the holder
+named. A member built from its own root locks its working set's
+tree. `-Dike.build.lock=false` skips the lock, and so do sessions
+whose goals are all read-only (`validate`, `help:*`,
+`dependency:tree`/`list`/`resolve`, `ws:*-draft`).
+
+Only the outer Maven session locks: a Maven started by the holder
+(`exec`, the invoker, a `ws:` goal running `mvn`) finds its ancestor
+in the lock file and proceeds unlocked. The OS releases the lock
+when the holder exits, Ctrl-C and crashes included, so a dead build
+never wedges the tree. IntelliJ's Maven sync neither takes nor waits
+for the lock; IDE builds take it only when delegated to Maven.
+
+When a compile fails with javac `module not found: X`, or a test
+fork with `NoClassDefFoundError`/`ClassNotFoundException` for a
+reactor sibling's class, the extension logs a diagnosis (and saves it
+under `.mvn/target/ike-diagnostics/`): the sibling's `target/classes`,
+whether the class or `module-info.class` is there and when it was
+written relative to the build's start and to this session's own
+compile of the sibling, the file the dependency resolved to (reactor
+class directory, packaged jar, project-local repository, or local
+repository), and other processes working in the tree. It tells an
+outside writer apart from Maven resolving or ordering the sibling
+wrongly (MNG-8096).
+
 == Stability commitment
 
 This artifact does exactly one thing and never grows. The
 dependency surface stays at the Maven 4 API jars (compile scope,
-loaded into the extension classloader). No `ike-*` runtime
+loaded into the extension classloader), plus `maven-core` (provided)
+for the session-level build lock and diagnosis. No `ike-*` runtime
 dependencies, no business logic, no knowledge of IKE conventions
 beyond _"sibling `workspace.yaml` marks a workspace POM."_
 

@@ -118,6 +118,23 @@
             <artifactId>maven-api-di</artifactId>
             <version>${maven.version}</version>
         </dependency>
+        <!-- Classic Maven core surface for the session half (BuildSessionSpy,
+             BuildLockGate): EventSpy, ExecutionEvent, MavenSession, lifecycle
+             participants. Provided by the running Maven; the new API has no
+             session-start or mojo-failure hook an extension can block or
+             fail in. Registered through META-INF/sisu/javax.inject.Named. -->
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-core</artifactId>
+            <version>${maven.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- Maven exports org.slf4j to core extensions, so the API is provided
              by the running Maven; the simple binding is for the tests, which
              read the extension's warnings off standard error. -->
