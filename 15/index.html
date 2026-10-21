@@ -1,0 +1,522 @@
+<!DOCTYPE html><html lang="">
+
+
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<title>IKE Workspace Extension &ndash; IKE Workspace Extension</title>
+
+	<meta name="keywords" content="IKE Network,Maven 4 extension,workspace,subprojects,ModelTransformer" />
+	<meta name="generator" content="Maven Site Plugin, Doxia Site Renderer 2.0.0, Skin sentry-maven-skin 7.0.00, from asciidoc" />
+	<meta property="article:published_time" content="1980-02-01T00:00:00" />
+	<meta property="article:modified_time" content="1980-02-01T00:00:00" />
+
+
+	<link rel="canonical" href="https://ike.network/ike-workspace-extension/index.html">
+	<link rel="alternate" type="text/markdown" href="index.html.md">	<link rel="stylesheet" href="./css/main-combined.css">
+	<link rel="stylesheet" href="./css/site.css">
+
+<script type="application/ld+json">
+{
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	"headline": "IKE Workspace Extension",
+	"datePublished": "1980-02-01T00:00:00",
+	"dateModified": "1980-02-01T00:00:00",
+	"mainEntityOfPage": "https://ike.network/ike-workspace-extension/index.html",
+}
+</script>
+</head>
+
+<body class="sentry-site sentry-green" ng-class="{'dark': $matchMedia.dark }" ng-app="sentry.site" ng-strict-di ng-controller="siteController" ng-keydown="handleKeyboard($event)">
+
+<script>(function (){var d=window.localStorage.getItem('matchMediaLight.userIsDark');return null!=d?d==='true':window.matchMedia('(prefers-color-scheme: dark)').matches})()&&document.body.classList.add('dark')</script>
+
+	<header role="banner">
+
+		<div class="hidden-xs navbar navbar-inverse site-logo">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="../">IKE Workspace Extension</a>
+			</div>
+			<ul class="nav navbar-nav">
+			</ul>
+		<ul class="nav navbar-nav navbar-right">
+<li class="dark-toggle"><toggle ng-model="$matchMedia.dark" ng-change="switchColors()" size="btn-xs" width="34px" height="22px" off-class="day" on-class="night" toggle-class="navbar-btn dark-toggle" on="<i class='fa-solid fa-moon'></i>" off="<i class='sun-icon'></i>" title="Switch between dark and light color schemes" tabindex="0"></toggle></li>
+					<li>
+					<a href="https://github.com/IKE-Network/ike-workspace-extension">GitHub <i class='fa-brands fa-github'></i></a>
+				</li>
+				</ul>
+	</div>
+
+	<div class="visible-xs navbar navbar-inverse site-logo site-logo-xs">
+			<ul class="nav navbar-nav">
+				<li><a href="../">IKE Workspace Extension</a></li>
+			</ul>
+		</div>
+	<div class="visible-xs navbar navbar-inverse site-logo site-logo-xs breadcrumb-xs">
+			<ul class="nav navbar-nav">
+<li><a href="../">IKE</a></li>
+<li class="active"><a href="index.html">IKE Workspace Extension</a></li>
+			</ul>
+		</div>
+
+		<div class="navbar site-banner">
+
+			<div class="container-fluid">
+
+				<div class="navbar-header" ng-class="{'show-search-xs': showSearchInput && $matchMedia.size == 'xs'}">
+					<button
+						class="navbar-toggle hidden-lg hidden-md hidden-sm"
+						ng-click="showSearchInput = !showSearchInput; clearSearch()"
+						title="{{ showSearchInput ? 'Close the search' : 'Search' }}"
+						type="button"
+					>
+						<i ng-class="showSearchInput ? 'fas fa-times' : 'fa fa-search'"></i>
+					</button>
+
+					<div class="navbar-brand">
+					<ol class="breadcrumb hidden-xs">
+<li><a href="../">IKE</a></li>
+<li class="active"><a href="index.html">IKE Workspace Extension</a></li>
+						</ol>
+					<div class="header-title">IKE Workspace Extension</div>
+						<div class="header-subtitle">
+							<span class="version-prefix">Version</span>
+							<span class="version">15</span>
+						</div>
+					</div>
+					<div class="navbar-brand header-xxs visible-xs">
+						<div class="header-title">IKE Workspace Extension</div>
+						<div class="header-subtitle">
+							Version <strong>15</strong>
+						</div>
+					</div>
+					<form class="navbar-form site-search site-search-xs visible-xs" ng-show="showSearchInput">
+						<input
+							type="search"
+							class="form-control"
+							placeholder="Search..."
+							aria-label="Search"
+							ng-model="siteSearch"
+							ng-change="search(siteSearch)"
+							ng-model-options="{ debounce: 500 }"
+							ng-keydown="handleKeyboard($event)"
+							ng-focus="prefetchSearchIndex()"
+							focus-me="showSearchInput"
+						/>
+					</form>
+				</div>
+
+				<form class="navbar-form navbar-right site-search hidden-xs">
+					<div class="form-group has-feedback">
+						<input
+							type="text"
+							class="form-control"
+							placeholder="Search..."
+							aria-label="Search"
+							ng-model="siteSearch"
+							ng-change="search(siteSearch)"
+							ng-model-options="{ debounce: 500 }"
+							ng-keydown="handleKeyboard($event)"
+							ng-focus="prefetchSearchIndex()"
+						/>
+						<i class="fa fa-search form-control-feedback" aria-hidden="true"></i>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</header>
+
+	<div class="container-fluid main-container">
+		<div class="row display-flex">
+
+			<nav class="left-menu hidden-xs col-sm-4 col-md-3" role="navigation">
+		<h5 class="text-uppercase">Documentation</h5>
+
+<ul class="nav nav-pills nav-stacked animate">
+<li class="active"><a href="index.html" ng-click="hideSubItems = !hideSubItems"><i class="fas fa-home"></i> Overview</a></li>
+</ul>
+		<h5 class="text-uppercase">Reports</h5>
+
+<ul class="nav nav-pills nav-stacked animate">
+<li><a href="project-info.html"><i ng-class="hideSubItems ? 'fas fa-folder' : 'fas fa-folder-open'"></i> Project Information <span class="badge">10</span></a></li>
+
+<ul class="nav nav-pills nav-stacked animate">
+<li><a href="dependencies.html"><i class="fas fa-file-alt"></i> Dependencies</a></li>
+<li><a href="dependency-info.html"><i class="fas fa-file-alt"></i> Maven Coordinates</a></li>
+<li><a href="distribution-management.html"><i class="fas fa-file-alt"></i> Distribution Management</a></li>
+<li><a href="licenses.html"><i class="fas fa-file-alt"></i> Licenses</a></li>
+<li><a href="plugin-management.html"><i class="fas fa-file-alt"></i> Plugin Management</a></li>
+<li><a href="plugins.html"><i class="fas fa-file-alt"></i> Plugins</a></li>
+<li><a href="scm.html"><i class="fas fa-file-alt"></i> Source Code Management</a></li>
+<li><a href="summary.html"><i class="fas fa-file-alt"></i> Summary</a></li>
+<li><a href="team.html"><i class="fas fa-file-alt"></i> Team</a></li>
+</ul>
+</ul>
+			</nav>
+
+			<main class="main-content col-xs-12 col-sm-8 col-md-9">
+
+				<div ng-hide="siteSearch">
+
+					<div class="row">
+
+					<div class="col-md-12">
+					<div class="page-header visible-print-block">
+							<h3><small>IKE Workspace Extension</small><br/>							IKE Workspace Extension 15
+							</h3>
+						</div>
+								<div class="home-xs visible-xs">
+									<h1 title="Documentation Home"><i class="fas fa-home"></i></h1>
+									<ul class="list-group">
+										<li class="list-group-item"><i class="fas fa-folder-open"></i>Documentation</li>
+												<a class="list-group-item" href="#ike-workspace-extension" du-smooth-scroll>
+													<i class="fas fa-home"></i>Overview
+													<i class="fas fa-angle-double-down pull-right"></i>
+												</a>
+										<li class="list-group-item"><i class="fas fa-folder-open"></i>Reports</li>
+												<a class="list-group-item" href="project-info.html">
+													<i class="fas fa-file-alt"></i>Project Information
+<span class="badge">10</span>												</a>
+									</ul>
+								</div>
+<h1 id="ike-workspace-extension">IKE Workspace Extension</h1>
+<p><span class="image"><a class="image externalLink" href="https://central.sonatype.com/artifact/network.ike.tooling/ike-workspace-extension"><img src="https://img.shields.io/maven-central/v/network.ike.tooling/ike-workspace-extension" alt="Maven Central"></a><sup class="visible-print-inline">[1]</sup></span></p>
+<p><code>network.ike.tooling:ike-workspace-extension</code> is a Maven 4 build extension that prunes non-existent <code>&lt;subprojects&gt;</code> entries from IKE workspace POMs before model validation. Lets a fresh clone of any IKE workspace bootstrap with <code>mvn ws:scaffold-init</code> even when no subproject directory is on disk yet.</p>
+<div>
+ <h2 id="what-it-does"><a href="#what-it-does"></a><a id="what-it-does"></a>What it does</h2>
+ <p>When Maven 4 reads a workspace POM declaring several subprojects but the working tree only has the workspace root (because the operator just ran <code>git clone</code> and has not yet populated subprojects), Maven’s model validator fatally aborts the build with <strong>"Child subproject X does not exist"</strong> — before any goal can run. That makes the documented bootstrap (<code>git clone &amp;&amp; cd &amp;&amp; mvn ws:scaffold-init</code>) impossible. See <a href="https://github.com/IKE-Network/ike-issues/issues/459" class="externalLink">IKE-Network/ike-issues#459</a><sup class="visible-print-inline">[2]</sup>.</p>
+ <p>This extension implements <code>org.apache.maven.api.spi.ModelTransformer.transformFileModel</code>, which fires <strong>before</strong> profile activation and subproject existence validation. For any POM whose directory has a sibling <code>workspace.yaml</code> (the "this is a workspace POM" marker), the transformer:</p>
+ <ol style="list-style-type: decimal;">
+  <li>Removes <code>&lt;subprojects&gt;</code> entries whose <code>&lt;sub&gt;/pom.xml</code> does not exist on disk.</li>
+  <li>Removes file-activated profiles whose <code>&lt;file&gt;&lt;exists&gt;</code> target is missing — so any <code>-P?with-X</code> flag on the command line silently no-ops on the missing profile name.</li>
+ </ol>
+ <p>Every other POM passes through untouched.</p>
+</div>
+<div>
+ <h2 id="build-lock-and-missing-module-diagnosis"><a href="#build-lock-and-missing-module-diagnosis"></a><a id="build-lock-and-missing-module-diagnosis"></a>Build lock and missing-module diagnosis</h2>
+ <p>Every working-set build takes an exclusive OS file lock on <code>&lt;root&gt;/.mvn/target/build.lock</code> when project discovery starts and holds it until the session ends. A second build of the same tree waits, saying every 30 seconds who holds the lock (pid, host, start time, goals and <code>-pl</code>), and fails after <code>-Dike.build.lock.timeout</code> (default <code>30m</code>; <code>PT45M</code>, <code>90s</code>, <code>2h</code> also work) with the holder named. A member built from its own root locks its working set’s tree. <code>-Dike.build.lock=false</code> skips the lock, and so do sessions whose goals are all read-only (<code>validate</code>, <code>help:*</code>, <code>dependency:tree</code>/<code>list</code>/<code>resolve</code>, <code>ws:*-draft</code>).</p>
+ <p>Only the outer Maven session locks: a Maven started by the holder (<code>exec</code>, the invoker, a <code>ws:</code> goal running <code>mvn</code>) finds its ancestor in the lock file and proceeds unlocked. The OS releases the lock when the holder exits, Ctrl-C and crashes included, so a dead build never wedges the tree. IntelliJ’s Maven sync neither takes nor waits for the lock; IDE builds take it only when delegated to Maven.</p>
+ <p>When a compile fails with javac <code>module not found: X</code>, or a test fork with <code>NoClassDefFoundError</code>/<code>ClassNotFoundException</code> for a reactor sibling’s class, the extension logs a diagnosis (and saves it under <code>.mvn/target/ike-diagnostics/</code>): the sibling’s <code>target/classes</code>, whether the class or <code>module-info.class</code> is there and when it was written relative to the build’s start and to this session’s own compile of the sibling, the file the dependency resolved to (reactor class directory, packaged jar, project-local repository, or local repository), and other processes working in the tree. It tells an outside writer apart from Maven resolving or ordering the sibling wrongly (MNG-8096).</p>
+</div>
+<div>
+ <h2 id="stability-commitment"><a href="#stability-commitment"></a><a id="stability-commitment"></a>Stability commitment</h2>
+ <p>This artifact does exactly one thing and never grows. The dependency surface stays at the Maven 4 API jars (compile scope, loaded into the extension classloader), plus <code>maven-core</code> (provided) for the session-level build lock and diagnosis. No <code>ike-*</code> runtime dependencies, no business logic, no knowledge of IKE conventions beyond <em>"sibling <code>workspace.yaml</code> marks a workspace POM."</em></p>
+ <p>Versioned independently of the <a href="https://github.com/IKE-Network/ike-platform" class="externalLink">ike-platform</a><sup class="visible-print-inline">[3]</sup> release cadence. If we ever need different behavior, we add a separate extension rather than evolving this one.</p>
+</div>
+<div>
+ <h2 id="wiring"><a href="#wiring"></a><a id="wiring"></a>Wiring</h2>
+ <p>Declared in a workspace’s <code>.mvn/extensions.xml</code>:</p>
+ <div class="source">
+  <pre class="prettyprint" copy-to-clipboard=""><code>&lt;extensions&gt;
+    &lt;extension&gt;
+        &lt;groupId&gt;network.ike.tooling&lt;/groupId&gt;
+        &lt;artifactId&gt;ike-workspace-extension&lt;/artifactId&gt;
+        &lt;version&gt;1&lt;/version&gt;
+    &lt;/extension&gt;
+&lt;/extensions&gt;</code></pre>
+ </div>
+ <p>The ike-platform workspace plugin’s <code>ws:scaffold-init</code> writes this entry into new workspaces automatically; <code>ws:scaffold-publish</code> keeps it in sync on existing workspaces. The version is sourced from a property declared in <code>ike-parent</code> — operators do not maintain it by hand.</p>
+</div>
+<div>
+ <h2 id="coordinates"><a href="#coordinates"></a><a id="coordinates"></a>Coordinates</h2>
+ <div class="source">
+  <pre class="prettyprint" copy-to-clipboard=""><code>&lt;dependency&gt;
+    &lt;groupId&gt;network.ike.tooling&lt;/groupId&gt;
+    &lt;artifactId&gt;ike-workspace-extension&lt;/artifactId&gt;
+    &lt;version&gt;1&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+ </div>
+ <p>Available from Maven Central.</p>
+</div>
+<div>
+ <h2 id="tracking"><a href="#tracking"></a><a id="tracking"></a>Tracking</h2>
+ <ul>
+  <li><a href="https://github.com/IKE-Network/ike-issues/issues/460" class="externalLink">IKE-Network/ike-issues#460</a><sup class="visible-print-inline">[4]</sup> — productionization plan</li>
+  <li><a href="https://github.com/IKE-Network/ike-issues/issues/459" class="externalLink">IKE-Network/ike-issues#459</a><sup class="visible-print-inline">[2]</sup> — underlying defect this extension fixes</li>
+ </ul>
+</div>
+
+							<div class="document-footer">
+<div class="keywords">
+<span class="label label-default">IKE Network</span>
+<span class="label label-default">Maven 4 extension</span>
+<span class="label label-default">workspace</span>
+<span class="label label-default">subprojects</span>
+<span class="label label-default">ModelTransformer</span>
+</div>
+<div class="footnotes visible-print-block">
+								Links:
+								<ul class="list-unstyled">
+								<li>[1] https://central.sonatype.com/artifact/network.ike.tooling/ike-workspace-extension</li>
+								<li>[2] https://github.com/IKE-Network/ike-issues/issues/459</li>
+								<li>[3] https://github.com/IKE-Network/ike-platform</li>
+								<li>[4] https://github.com/IKE-Network/ike-issues/issues/460</li>
+								</ul>
+							</div>
+<div class="date">Date: <strong>2026-10-21 13:09:46 -0700</strong></div>
+						</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Search results -->
+				<div class="search-results" ng-show="siteSearch">
+
+					<h2 class="hidden-xs">
+						Search Results for <em>{{siteSearch | truncate:'50'}}</em>
+					</h2>
+
+					<div ng-show="resultArray.length">
+
+						<!-- Result count -->
+						<div class="hidden-xs">
+							{{resultArray.length}}
+							<span ng-pluralize count="resultArray.length" when="{'1': 'result', 'other': 'results'}"></span>
+						</div>
+
+						<!-- List of results (Desktop) -->
+						<div ng-if="$matchMedia.size != 'xs'" class="search-results-content hidden-xs">
+							<div class="search-results-entry" ng-repeat="result in resultArray track by result.href">
+								<div class="search-results-parents small text-muted">
+									<span class="search-results-parents-entry" ng-repeat="parent in result.parents track by parent.title">
+										<a ng-if="parent.path" ng-href="{{parent.path}}" ng-bind-html="parent.title"></a>
+										<span ng-if="!parent.path" ng-bind-html="parent.title"></span>
+									</span>
+								</div>
+								<p class="search-results-title"><a ng-href="{{result.href}}"><i class="fas fa-file-alt"></i>{{result.title}}</a></p>
+								<div class="progressbar" aria-hidden="true">
+									<div class="bar-bg"></div>
+									<div class="bar-fg" ng-style="{width: result.score * 100 + '%'}"></div>
+								</div>
+								<div class="small extract">{{result.body | truncate:'400'}}</div>
+							</div>
+						</div>
+
+						<!-- List of results (mobile) -->
+						<ul ng-if="$matchMedia.size == 'xs'" class="list-group search-results-content search-results-content-xs visible-xs">
+							<a
+								ng-repeat="result in resultArray track by result.href"
+								ng-href="{{result.href}}"
+								class="list-group-item"
+							>
+								<div class="search-results-parents small" aria-hidden="true">
+									<span class="search-results-parents-entry" ng-repeat="parent in result.parents track by parent.title" ng-bind-html="parent.title"></span>
+								</div>
+								<div class="search-results-title"><i class="fas fa-file-alt"></i>{{result.title}}</div>
+								<div class="progressbar" aria-hidden="true">
+									<div class="bar-bg"></div>
+									<div class="bar-fg" ng-style="{width: result.score * 100 + '%'}"></div>
+								</div>
+								<div class="small extract">{{result.body | truncate:'100'}}</div>
+							</a>
+						</ul>
+
+					</div>
+
+					<div ng-hide="resultArray.length">
+						<div ng-show="searchLoading" class="search-loading">
+							<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+							<em>Searching...</em>
+						</div>
+						<em ng-hide="searchLoading">No results.</em>
+					</div>
+
+				</div>
+
+			</main>
+
+		</div>
+	</div>
+
+	<!--Footer in mobile and desktop-->
+	<footer class="footer">
+
+		<p class="footer-title" ng-class="{'text-center': $matchMedia.size == 'xs'}">
+			<strong>IKE Workspace Extension 15</strong>
+			<span class="hidden-xs">|</span><br class="hidden-sm hidden-md hidden-lg"/>
+			Documentation as of <strong><time datetime="1980-02-01">1980-02-01</time></strong>
+		</p>
+	<div class="visible-xs navbar navbar-inverse site-logo site-logo-xs">
+			<ul class="nav navbar-nav">
+			<li><a href="../">IKE Workspace Extension</a></li>
+<li class="dark-toggle dark-toggle-xs">
+    <toggle
+        ng-model="$matchMedia.dark"
+        ng-change="switchColors()"
+        size="btn-md"
+        width="55px"
+        height="32px"
+        off-class="day"
+        on-class="night"
+        toggle-class="navbar-btn dark-toggle"
+        on="<i class='fa-solid fa-moon'></i>"
+        off="<i class='sun-icon'></i>"
+        title="Switch between dark and light color schemes"
+        tabindex="0"></toggle>
+		</li>
+			<li><a href="https://github.com/IKE-Network/ike-workspace-extension">GitHub <i class='fa-brands fa-github'></i></a></li>
+		</ul>
+		</div>
+
+		<div class="footer-copyright" ng-class="{'text-center': $matchMedia.size == 'xs'}">
+			<span class="copyright">Copyright &copy; 2026&dash;1980</span> <a href="https://ike.network">IKE Network</a>	</div>
+	</footer>
+
+	<div ng-show="showBackToTop" class="back-to-top" ng-click="backToTop()"><i class="fa fa-angle-up" aria-hidden="true"></i></div>
+
+	<script src="./js/main-combined.js"></script>
+
+	<script src="./js/prism.js"></script>
+	<script>Prism.plugins.autoloader.languages_path = "./js/prism/";</script>
+	<script>
+angular.module("sentry.site").constant("RELATIVE_ROOT", ".");
+angular.module("sentry.site").constant("SITE_MENU", [
+{
+	path: "index.html",
+	title: "Overview",
+	parents: [{ title: "Documentation" }]
+},
+{
+	path: "/project-info.html",
+	title: "Project Information",
+	parents: [{ title: "Reports" }]
+},
+{
+	path: "dependencies.html",
+	title: "Dependencies",
+	parents: [
+		{
+			title: "Reports"
+		},
+		{
+			path: "project-info.html",
+			title: "Project Information"
+		}
+	]
+},
+{
+	path: "dependency-info.html",
+	title: "Maven Coordinates",
+	parents: [
+		{
+			title: "Reports"
+		},
+		{
+			path: "project-info.html",
+			title: "Project Information"
+		}
+	]
+},
+{
+	path: "distribution-management.html",
+	title: "Distribution Management",
+	parents: [
+		{
+			title: "Reports"
+		},
+		{
+			path: "project-info.html",
+			title: "Project Information"
+		}
+	]
+},
+{
+	path: "index.html",
+	title: "About",
+	parents: [
+		{
+			title: "Reports"
+		},
+		{
+			path: "project-info.html",
+			title: "Project Information"
+		}
+	]
+},
+{
+	path: "licenses.html",
+	title: "Licenses",
+	parents: [
+		{
+			title: "Reports"
+		},
+		{
+			path: "project-info.html",
+			title: "Project Information"
+		}
+	]
+},
+{
+	path: "plugin-management.html",
+	title: "Plugin Management",
+	parents: [
+		{
+			title: "Reports"
+		},
+		{
+			path: "project-info.html",
+			title: "Project Information"
+		}
+	]
+},
+{
+	path: "plugins.html",
+	title: "Plugins",
+	parents: [
+		{
+			title: "Reports"
+		},
+		{
+			path: "project-info.html",
+			title: "Project Information"
+		}
+	]
+},
+{
+	path: "scm.html",
+	title: "Source Code Management",
+	parents: [
+		{
+			title: "Reports"
+		},
+		{
+			path: "project-info.html",
+			title: "Project Information"
+		}
+	]
+},
+{
+	path: "summary.html",
+	title: "Summary",
+	parents: [
+		{
+			title: "Reports"
+		},
+		{
+			path: "project-info.html",
+			title: "Project Information"
+		}
+	]
+},
+{
+	path: "team.html",
+	title: "Team",
+	parents: [
+		{
+			title: "Reports"
+		},
+		{
+			path: "project-info.html",
+			title: "Project Information"
+		}
+	]
+},
+]);
+
+	</script>
+</body>
+</html>

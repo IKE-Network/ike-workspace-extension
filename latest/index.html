@@ -84,13 +84,13 @@
 					<div class="header-title">IKE Workspace Extension</div>
 						<div class="header-subtitle">
 							<span class="version-prefix">Version</span>
-							<span class="version">14</span>
+							<span class="version">15</span>
 						</div>
 					</div>
 					<div class="navbar-brand header-xxs visible-xs">
 						<div class="header-title">IKE Workspace Extension</div>
 						<div class="header-subtitle">
-							Version <strong>14</strong>
+							Version <strong>15</strong>
 						</div>
 					</div>
 					<form class="navbar-form site-search site-search-xs visible-xs" ng-show="showSearchInput">
@@ -166,7 +166,7 @@
 
 					<div class="col-md-12">
 					<div class="page-header visible-print-block">
-							<h3><small>IKE Workspace Extension</small><br/>							IKE Workspace Extension 14
+							<h3><small>IKE Workspace Extension</small><br/>							IKE Workspace Extension 15
 							</h3>
 						</div>
 								<div class="home-xs visible-xs">
@@ -197,8 +197,14 @@
  <p>Every other POM passes through untouched.</p>
 </div>
 <div>
+ <h2 id="build-lock-and-missing-module-diagnosis"><a href="#build-lock-and-missing-module-diagnosis"></a><a id="build-lock-and-missing-module-diagnosis"></a>Build lock and missing-module diagnosis</h2>
+ <p>Every working-set build takes an exclusive OS file lock on <code>&lt;root&gt;/.mvn/target/build.lock</code> when project discovery starts and holds it until the session ends. A second build of the same tree waits, saying every 30 seconds who holds the lock (pid, host, start time, goals and <code>-pl</code>), and fails after <code>-Dike.build.lock.timeout</code> (default <code>30m</code>; <code>PT45M</code>, <code>90s</code>, <code>2h</code> also work) with the holder named. A member built from its own root locks its working set’s tree. <code>-Dike.build.lock=false</code> skips the lock, and so do sessions whose goals are all read-only (<code>validate</code>, <code>help:*</code>, <code>dependency:tree</code>/<code>list</code>/<code>resolve</code>, <code>ws:*-draft</code>).</p>
+ <p>Only the outer Maven session locks: a Maven started by the holder (<code>exec</code>, the invoker, a <code>ws:</code> goal running <code>mvn</code>) finds its ancestor in the lock file and proceeds unlocked. The OS releases the lock when the holder exits, Ctrl-C and crashes included, so a dead build never wedges the tree. IntelliJ’s Maven sync neither takes nor waits for the lock; IDE builds take it only when delegated to Maven.</p>
+ <p>When a compile fails with javac <code>module not found: X</code>, or a test fork with <code>NoClassDefFoundError</code>/<code>ClassNotFoundException</code> for a reactor sibling’s class, the extension logs a diagnosis (and saves it under <code>.mvn/target/ike-diagnostics/</code>): the sibling’s <code>target/classes</code>, whether the class or <code>module-info.class</code> is there and when it was written relative to the build’s start and to this session’s own compile of the sibling, the file the dependency resolved to (reactor class directory, packaged jar, project-local repository, or local repository), and other processes working in the tree. It tells an outside writer apart from Maven resolving or ordering the sibling wrongly (MNG-8096).</p>
+</div>
+<div>
  <h2 id="stability-commitment"><a href="#stability-commitment"></a><a id="stability-commitment"></a>Stability commitment</h2>
- <p>This artifact does exactly one thing and never grows. The dependency surface stays at the Maven 4 API jars (compile scope, loaded into the extension classloader). No <code>ike-*</code> runtime dependencies, no business logic, no knowledge of IKE conventions beyond <em>"sibling <code>workspace.yaml</code> marks a workspace POM."</em></p>
+ <p>This artifact does exactly one thing and never grows. The dependency surface stays at the Maven 4 API jars (compile scope, loaded into the extension classloader), plus <code>maven-core</code> (provided) for the session-level build lock and diagnosis. No <code>ike-*</code> runtime dependencies, no business logic, no knowledge of IKE conventions beyond <em>"sibling <code>workspace.yaml</code> marks a workspace POM."</em></p>
  <p>Versioned independently of the <a href="https://github.com/IKE-Network/ike-platform" class="externalLink">ike-platform</a><sup class="visible-print-inline">[3]</sup> release cadence. If we ever need different behavior, we add a separate extension rather than evolving this one.</p>
 </div>
 <div>
@@ -251,7 +257,7 @@
 								<li>[4] https://github.com/IKE-Network/ike-issues/issues/460</li>
 								</ul>
 							</div>
-<div class="date">Date: <strong>2026-10-03 09:02:48 -0700</strong></div>
+<div class="date">Date: <strong>2026-10-21 13:09:46 -0700</strong></div>
 						</div>
 						</div>
 					</div>
@@ -330,7 +336,7 @@
 	<footer class="footer">
 
 		<p class="footer-title" ng-class="{'text-center': $matchMedia.size == 'xs'}">
-			<strong>IKE Workspace Extension 14</strong>
+			<strong>IKE Workspace Extension 15</strong>
 			<span class="hidden-xs">|</span><br class="hidden-sm hidden-md hidden-lg"/>
 			Documentation as of <strong><time datetime="1980-02-01">1980-02-01</time></strong>
 		</p>
