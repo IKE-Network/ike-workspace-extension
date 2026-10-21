@@ -5,12 +5,23 @@
 [![Documentation](https://img.shields.io/badge/docs-ike.network%2Fike--workspace--extension-blue)](https://ike.network/ike-workspace-extension/)
 [![IKE Network](https://img.shields.io/badge/IKE-Network-green)](https://ike.network/)
 
-Maven 4 build extension that prunes non-existent `<subprojects>`
-entries from IKE workspace POMs before model validation. Lets a
-fresh clone of any IKE workspace bootstrap with `mvn
-ws:scaffold-init` even when no subproject directory is on disk yet.
+Maven 4 build extension that keeps an IKE working set building as
+one tree. It does the work that has to happen inside Maven's core,
+before any goal can run or around the whole build session:
 
-## What it does
+- **Missing subprojects.** It prunes `<subprojects>` entries that are
+  not on disk yet, so a fresh clone bootstraps with
+  `mvn ws:scaffold-init`.
+- **Intra-set versions.** It binds every dependency on a working-set
+  member to the reactor's version, so the reactor sorts and resolves
+  members as one set (`IKE-Network/ike-issues#1019`).
+- **Member caches.** A member built from its own root discards its
+  stale project-local repository (`IKE-Network/ike-issues#1265`).
+- **Build lock and diagnosis.** One build per tree at a time, and a
+  diagnosis when a sibling module goes missing mid-build
+  (`IKE-Network/ike-issues#1314`).
+
+## Missing subprojects
 
 When Maven 4 reads a workspace POM declaring six subprojects but
 the working tree only has the workspace root (because the
@@ -35,6 +46,31 @@ transformer:
    silently no-ops on the missing profile name.
 
 Every other POM passes through untouched.
+
+## Intra-set versions
+
+A working set makes its BOM a living member, so an intra-set
+dependency declared without a version has none while the model is
+built, and Maven's reactor sorter, which matches members by full
+identity, creates no edge for it. The extension binds each such
+coordinate at file-model time, before the sorter runs: in a build, to
+the reactor's current version; in a release
+(`-Dike.workspace.release=true`), to the member's last released
+version unless the release mission is releasing that member too, read
+from `releases/release-<mission>.yaml`. A dependency that already
+carries a version passes through, and so does every POM outside a
+working set.
+
+## Member caches
+
+Maven 4 resolves a reactor sibling outside the build from the
+project-local repository under the nearest `.mvn` root. Every member
+of a working set has one so it can build alone, so a member built from
+its own root served siblings from a cache its own last build wrote.
+On the first model read of such a build, the extension discards that
+member's cache, so siblings resolve from the local repository, which
+the working set's builds keep current. `-Dike.workspace.memberCache=keep`
+keeps it.
 
 ## Build lock and missing-module diagnosis
 
@@ -68,14 +104,20 @@ repository), and other processes working in the tree. It tells an
 outside writer apart from Maven resolving or ordering the sibling
 wrongly (MNG-8096).
 
-## Stability commitment
+## Scope
 
-This artifact does exactly one thing and never grows. The
-dependency surface stays at the Maven 4 API jars (compile scope,
-loaded into the extension classloader), plus `maven-core` (provided)
-for the session-level build lock and diagnosis. No `ike-*` runtime
-dependencies, no business logic, no knowledge of IKE conventions
-beyond *"sibling `workspace.yaml` marks a workspace POM."*
+A behavior belongs in this extension only when it must run inside
+Maven's core: on the file model before validation and reactor
+sorting, or around the build session. Anything a goal can do belongs
+in the workspace plugin instead.
+
+The dependency surface stays small. The Maven 4 API jars are at
+compile scope, loaded into the extension classloader. `maven-core`
+is provided, for the session-level build lock and diagnosis. There
+are no `ike-*` runtime dependencies. The IKE conventions it reads
+are the working set's own files: `workspace.yaml` and its member
+list, the release mission records under `releases/`, and the
+reactor root's `.mvn/target`.
 
 Inherits from
 [`network.ike:ike-base-parent`](https://github.com/IKE-Network/ike-base-parent)
@@ -88,8 +130,7 @@ avoid.
 
 Versioned independently of the
 [`ike-platform`](https://github.com/IKE-Network/ike-platform)
-release cadence. If we ever need different behavior, we add a
-separate extension rather than evolving this one.
+release cadence.
 
 ## Wiring
 
@@ -100,7 +141,7 @@ Declared in a workspace's `.mvn/extensions.xml`:
     <extension>
         <groupId>network.ike.tooling</groupId>
         <artifactId>ike-workspace-extension</artifactId>
-        <version>1</version>
+        <version>15</version>
     </extension>
 </extensions>
 ```
@@ -119,20 +160,18 @@ mvn clean install
 
 ## Release Cascade
 
-This artifact stands **outside** the IKE release cascade by
-design. Its contract is intentionally small and stable; coupling
-it to the cascade would re-introduce the version churn we are
-trying to eliminate. It is published independently when (rarely)
-its behavior contract changes.
-
 The IKE cascade
 ([`ike-tooling`](https://github.com/IKE-Network/ike-tooling) →
 [`ike-docs`](https://github.com/IKE-Network/ike-docs) →
 [`ike-platform`](https://github.com/IKE-Network/ike-platform) →
 consumers) does not depend on this artifact at build time. It is
-consumed at workspace **runtime** via `.mvn/extensions.xml`, so a
-cascade release does not have to wait for or trigger an extension
-release.
+consumed at workspace **runtime** via `.mvn/extensions.xml`.
+
+A release of this extension does start one cascade step. On TeamCity,
+the ike-platform release is triggered when an extension release
+succeeds. Its "align upstream cascade" commit writes the new
+extension version into `ike-parent`. A working set then takes it up
+when it moves to that `ike-parent` and runs `ws:scaffold-publish`.
 
 ## Links
 
