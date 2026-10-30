@@ -12,14 +12,14 @@ canonical_url: https://ike.network/ike-workspace-extension/dependency-info.html
 <dependency>
   <groupId>network.ike.tooling</groupId>
   <artifactId>ike-workspace-extension</artifactId>
-  <version>15</version>
+  <version>16</version>
 </dependency>
 ```
 
 ## [Apache Ivy](#apache-ivy)
 
 ```
-<dependency org="network.ike.tooling" name="ike-workspace-extension" rev="15">
+<dependency org="network.ike.tooling" name="ike-workspace-extension" rev="16">
   <artifact name="ike-workspace-extension" type="jar" />
 </dependency>
 ```
@@ -28,24 +28,24 @@ canonical_url: https://ike.network/ike-workspace-extension/dependency-info.html
 
 ```
 @Grapes(
-@Grab(group='network.ike.tooling', module='ike-workspace-extension', version='15')
+@Grab(group='network.ike.tooling', module='ike-workspace-extension', version='16')
 )
 ```
 
 ## [Gradle/Grails](#gradle-grails)
 
 ```
-implementation 'network.ike.tooling:ike-workspace-extension:15'
+implementation 'network.ike.tooling:ike-workspace-extension:16'
 ```
 
 ## [Scala SBT](#scala-sbt)
 
 ```
-libraryDependencies += "network.ike.tooling" % "ike-workspace-extension" % "15"
+libraryDependencies += "network.ike.tooling" % "ike-workspace-extension" % "16"
 ```
 
 ## [Leiningen](#leiningen)
 
 ```
-[network.ike.tooling/ike-workspace-extension "15"]
+[network.ike.tooling/ike-workspace-extension "16"]
 ```

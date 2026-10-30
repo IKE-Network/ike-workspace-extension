@@ -118,7 +118,7 @@ The following is a list of provided dependencies for this project. These depende
 
 ## [Dependency Tree](#dependency-tree)
 
-- network.ike.tooling:ike-workspace-extension:jar:15 ** 
+- network.ike.tooling:ike-workspace-extension:jar:16 ** 
   
   | IKE Workspace Extension |
   | --- |
